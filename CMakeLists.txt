@@ -3,4 +3,5 @@ project(FileSplit C)
 
 set(CMAKE_C_STANDARD 17)
 
-add_executable(FileSplit main.c)
+add_executable(FileSplit splitfile.c
+        mergefile.c)
