@@ -23,12 +23,13 @@ int main() {
         printf("%llu\n", i);
     }
     printf("%llu\n", (fileSize % fileChunckSize));
+    printf("%llu\n", (fileSize - (numberOfChunks * fileChunckSize)));
     if (fileSize % fileChunckSize != 0){
         unsigned long long remainderChunckSize = fileSize - (numberOfChunks * fileChunckSize);
         fread(buffer, remainderChunckSize, 1, inputFile);
         sprintf(temp, "%s.%llu", outputFile, i);
         FILE *output = fopen(temp, "wb");
-        fwrite(buffer, fileChunckSize, 1, output);
+        fwrite(buffer, remainderChunckSize, 1, output);
         fclose(output);
     }
     fclose(inputFile);
