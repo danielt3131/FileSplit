@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
     char inputFileName[100] = "input";
     char outputFileName[100] = "output";
-    if (argc > 3){
+    if (argc > 2){
         strncpy(inputFileName, argv[1], 100);
         strncpy(outputFileName, argv[2], 100);
     }
