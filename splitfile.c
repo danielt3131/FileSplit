@@ -11,7 +11,7 @@ int main() {
     unsigned long long fileSize = ftello(inputFile);
     fseeko(inputFile, 0, SEEK_SET);
     unsigned long long numberOfChunks = fileSize / fileChunckSize;
-    char outputFile[100] = "output";
+    char outputFile[100] = "split";
     char temp[100];
     unsigned long long i;
     for (i = 0; i < numberOfChunks; i++){
