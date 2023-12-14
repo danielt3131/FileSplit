@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     unsigned long long fileSize = ftello(inputFile);
     fseeko(inputFile, 0, SEEK_SET);
     unsigned long long numberOfChunks = fileSize / fileChunckSize;
-    char temp[100];
+    char temp[200];
     unsigned long long i;
     for (i = 0; i < numberOfChunks; i++){
         fread(buffer, fileChunckSize, 1, inputFile);

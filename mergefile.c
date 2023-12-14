@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
     }
     FILE *mergedFile = fopen(mergedFileName, "wb");
 
-    char temp[100];
+    char temp[200];
     FILE *splitFileOpen = NULL;
     unsigned long long splitFileSize = 0;
     unsigned long long i = 0;
