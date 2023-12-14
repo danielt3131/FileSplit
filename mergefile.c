@@ -1,8 +1,6 @@
-#define _FILE_OFFSET_BITS 64
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-const unsigned long long fileChunckSize = 1048576;
 
 int main() {
     unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
@@ -14,15 +12,19 @@ int main() {
     unsigned long long i = 0;
     do  {
         sprintf(temp, "%s.%llu", splitFile, i);
-        fopen(temp, "rb");
+        splitFileOpen = fopen(temp, "rb");
+        if(splitFileOpen == NULL){
+            break;
+        }
         fseeko(splitFileOpen, 0, SEEK_END);
         splitFileSize = ftello(splitFileOpen);
+        printf("%llu\n", splitFileSize);
         fseeko(splitFileOpen, 0, SEEK_SET);
         fread(buffer, splitFileSize, 1, splitFileOpen);
         fwrite(buffer, splitFileSize, 1, mergedFile);
         fclose(splitFileOpen);
         i++;
-    } while (!feof(splitFileOpen));
+    } while (splitFileOpen != NULL);
     free(buffer);
     fclose(mergedFile);
     return 0;
