@@ -2,16 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main() {
+int main(int argc, char **argv) {
     unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
-    FILE *mergedFile = fopen("mergedFile", "wb");
-    char splitFile[100] = "split";
+    char mergedFileName[100] = "mergedFile";
+    char splitFileName[100] = "split";
+    if (argc > 3){
+        strncpy(mergedFileName, argv[1], 100);
+        strncpy(splitFileName, argv[2], 100);
+    }
+    FILE *mergedFile = fopen(mergedFileName, "wb");
+
     char temp[100];
     FILE *splitFileOpen = NULL;
     unsigned long long splitFileSize = 0;
     unsigned long long i = 0;
-    do  {
-        sprintf(temp, "%s.%llu", splitFile, i);
+    while (1){
+        sprintf(temp, "%s.%llu", splitFileName, i);
         splitFileOpen = fopen(temp, "rb");
         if(splitFileOpen == NULL){
             break;
@@ -24,7 +30,7 @@ int main() {
         fwrite(buffer, splitFileSize, 1, mergedFile);
         fclose(splitFileOpen);
         i++;
-    } while (splitFileOpen != NULL);
+    }
     free(buffer);
     fclose(mergedFile);
     return 0;
