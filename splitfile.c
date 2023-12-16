@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
     }
     FILE *inputFile = fopen(inputFileName, "rb");
     if (inputFile == NULL){
+        free(buffer);
         return 0;
     }
     fseeko(inputFile, 0, SEEK_END);
