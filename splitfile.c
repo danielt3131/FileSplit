@@ -16,15 +16,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-const unsigned long long fileChunckSize = 1048576;
 
 int main(int argc, char **argv) {
     unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
     char inputFileName[100] = "input";
     char outputFileName[100] = "output";
+    unsigned long long fileChunkSize = 1048576;
     if (argc > 2){
         strncpy(inputFileName, argv[1], 100);
         strncpy(outputFileName, argv[2], 100);
+    }
+    if (argc > 3){
+        fileChunkSize = atoll(argv[3]);
     }
     FILE *inputFile = fopen(inputFileName, "rb");
     if (inputFile == NULL){
@@ -33,21 +36,21 @@ int main(int argc, char **argv) {
     fseeko(inputFile, 0, SEEK_END);
     unsigned long long fileSize = ftello(inputFile);
     fseeko(inputFile, 0, SEEK_SET);
-    unsigned long long numberOfChunks = fileSize / fileChunckSize;
+    unsigned long long numberOfChunks = fileSize / fileChunkSize;
     char temp[200];
     unsigned long long i;
     for (i = 0; i < numberOfChunks; i++){
-        fread(buffer, fileChunckSize, 1, inputFile);
+        fread(buffer, fileChunkSize, 1, inputFile);
         sprintf(temp, "%s.%llu", outputFileName, i);
         FILE *output = fopen(temp, "wb");
-        fwrite(buffer, fileChunckSize, 1, output);
+        fwrite(buffer, fileChunkSize, 1, output);
         fclose(output);
         printf("%llu\n", i);
     }
-    printf("%llu\n", (fileSize % fileChunckSize));
-    printf("%llu\n", (fileSize - (numberOfChunks * fileChunckSize)));
-    if (fileSize % fileChunckSize != 0){
-        unsigned long long remainderChunckSize = fileSize - (numberOfChunks * fileChunckSize);
+    printf("%llu\n", (fileSize % fileChunkSize));
+    printf("%llu\n", (fileSize - (numberOfChunks * fileChunkSize)));
+    if (fileSize % fileChunkSize != 0){
+        unsigned long long remainderChunckSize = fileSize - (numberOfChunks * fileChunkSize);
         fread(buffer, remainderChunckSize, 1, inputFile);
         sprintf(temp, "%s.%llu", outputFileName, i);
         FILE *output = fopen(temp, "wb");
