@@ -16,15 +16,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
+#include <ctype.h>
 #include "file.h"
+
 void mergeFile(char *inputFileName, char *outputFileName){
     unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
     FILE *mergedFile = fopen(inputFileName, "wb");
     FILE *splitFileOpen = NULL;
     unsigned long long splitFileSize;
     unsigned long long i = 0;
-    char *temp = (char *) malloc ((strlen(outputFileName) + 10);
-    while (1){
+    /*
+     * Calculate the number of split files
+     */
+    struct dirent *dirEntry;
+    DIR *dir = opendir(".");
+    unsigned long long numberOfSplitFiles = 0;
+    if (dir == NULL){
+        fprintf(stderr, "Unable to open the working directory\n");
+        return(EXIT_FAILURE);
+    } else{
+        while(dirEntry = readdir(dir) != NULL){
+            for(unsigned long long i = 0; i <= strlen(dirEntry->d_name); i++){
+                if(dirEntry->d_name[i] == '.' && isdigit(dirEntry->d_name[i + 1] == 1){
+                    numberOfSplitFiles++;
+                    break;
+                }
+            }  
+        }
+        closedir(dir);
+    }
+    char *temp = (char *) malloc ((strlen(outputFileName) + numberOfSplitFiles + 1);
+    for(unsigned long long i = 0; i < numberOfSplitFiles; i++){
         sprintf(temp, "%s.%llu", outputFileName, i);
         splitFileOpen = fopen(temp, "rb");
         if(splitFileOpen == NULL){
