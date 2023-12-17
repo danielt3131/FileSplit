@@ -59,7 +59,7 @@ int mergeFile(char *inputFileName, char *outputFileName){
             break;
         }
         splitFileSize = fileSize(splitFileOpen);
-        printf("%llu\n", splitFileSize);
+        // printf("%llu\n", splitFileSize);
         fread(buffer, splitFileSize, 1, splitFileOpen);
         fwrite(buffer, splitFileSize, 1, mergedFile);
         fclose(splitFileOpen);
