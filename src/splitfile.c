@@ -43,10 +43,10 @@ int splitFile(char *inputFileName, char *outputFileName, unsigned long long file
         FILE *output = fopen(temp, "wb");
         fwrite(buffer, fileChunkSize, 1, output);
         fclose(output);
-        printf("%llu\n", i);
+        // printf("%llu\n", i);
     }
-    printf("%llu\n", (inputFileSize % fileChunkSize));
-    printf("%llu\n", (inputFileSize - (numberOfChunks * fileChunkSize)));
+    // printf("%llu\n", (inputFileSize % fileChunkSize));
+    // printf("%llu\n", (inputFileSize - (numberOfChunks * fileChunkSize)));
     if (inputFileSize % fileChunkSize != 0){
         unsigned long long remainderChunckSize = inputFileSize % fileChunkSize;
         fread(buffer, remainderChunckSize, 1, inputFile);

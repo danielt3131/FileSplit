@@ -15,10 +15,15 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string.h> 
+#include <unistd.h>
+#include <ncurses.h>
 #include "file.h"
 #define MAX_FILENAME_LENGTH 100
 #define DEFAULT_CHUNK_SIZE 1048576
+#define ERROR_OUTPUT 1
+#define SPLIT_FILE 1
+#define MERGE_FILE 2
 void fileSelection(char *inputFileName, char *outputFileName){
     
     // Allocating inputFileName from the heap
@@ -34,25 +39,70 @@ void fileSelection(char *inputFileName, char *outputFileName){
         fprintf(stderr, "Unable to allocate memory. Now terminating\n");
         exit(EXIT_FAILURE);
     }
-    // Flush stdin
-    fgets(inputFileName, MAX_FILENAME_LENGTH, stdin);
-    printf("Please type in the name of the input file\n");
-    fgets(inputFileName, MAX_FILENAME_LENGTH, stdin);
-    // Remove LF
-    inputFileName[(strlen(inputFileName) - 1)] = '\0';
-    printf("Please type in the name of the output file\n");
-    fgets(outputFileName, MAX_FILENAME_LENGTH, stdin);
-    // Remove LF
-    outputFileName[(strlen(outputFileName) - 1)] = '\0';
+    refresh();
+    printw("Please type in the name of the input file\n");
+    refresh();
+    getnstr(inputFileName, MAX_FILENAME_LENGTH);
+    clear();
+    printw("Please type in the name of the output file\n");
+    refresh();
+    getnstr(outputFileName, MAX_FILENAME_LENGTH);
+    clear();
 }
 
 void chunkSelection(unsigned long long *chunkSize){
-    printf("Do you want to set the size for each file slice the default value is %d\n", DEFAULT_CHUNK_SIZE);
-    printf("If so then press 1 otherwise press any other key\n");
-    char selector = getc(stdin);
+    printw("Do you want to set the size for each file slice the default value is %d\n", DEFAULT_CHUNK_SIZE);
+    printw("If so then press 1 otherwise press any other key\n");
+    char selector = getch();
     if (selector == '1'){
-        printf("Enter in the size you want each file slice to be\n");
-        scanf("%llu", chunkSize);
+        printw("Enter in the size you want each file slice to be\n");
+        scanw("%llu", chunkSize);
+    }
+    clear();
+}
+
+void completedMergeMsg(char *inputFileName, char *outputFileName){
+    clear();
+    printw("The file(s) of %s have been merged into %s\n", inputFileName, outputFileName);
+    refresh();
+    free(inputFileName);
+    free(outputFileName);
+    sleep(5);
+    endwin();
+}
+
+void completedSplitMsg(char *inputFileName, char *outputFileName){
+    clear();
+    printw("The file of %s have been splited into %s\n", inputFileName, outputFileName);
+    refresh();
+    free(inputFileName);
+    free(outputFileName);
+    sleep(5);
+    endwin();
+}
+
+void errorMsg(short type, char *inputFileName, char *outputFileName){
+    switch (type){
+    case SPLIT_FILE:
+        attron(COLOR_PAIR(ERROR_OUTPUT));
+        printw("There was an error in splitFile\n");
+        refresh();
+        sleep(5);
+        free(inputFileName);
+        free(outputFileName);
+        endwin();
+        break;
+    case MERGE_FILE:
+        attron(COLOR_PAIR(ERROR_OUTPUT));
+        printw("There was an error in mergeFile\n");
+        refresh();
+        sleep(5);
+        free(inputFileName);
+        free(outputFileName);
+        endwin();
+        break;
+    default:
+        break;
     }
 }
 
@@ -78,9 +128,9 @@ int main (int argc, char **argv){
         if (argc > 4){
             fileChunkSize = atoll(argv[4]);
         }
-        if (atoi(argv[3]) == 1){
+        if (atoi(argv[3]) == SPLIT_FILE){
             splitFile(inputFileName, outputFileName, fileChunkSize);
-        } else if (atoi(argv[3]) == 2){
+        } else if (atoi(argv[3]) == MERGE_FILE){
             mergeFile(inputFileName, outputFileName);
         } else{
             fprintf(stderr, "Wrong command line arguments\n");
@@ -89,30 +139,43 @@ int main (int argc, char **argv){
             return (EXIT_FAILURE);
         }
     } else {
-        printf("Welcome to file splitter\n");
-        printf("Press 1 to split a file\n");
-        printf("Press 2 to merge a file\n");
-        printf("Press any other key to quit\n");
-        char selector = getc(stdin);
+        // Init ncurses
+        initscr();
+        start_color();
+        if(has_colors() == false){
+            endwin();
+            printf("Terminal doesn't support colors\n");
+            exit(EXIT_FAILURE);
+        }
+        init_pair(ERROR_OUTPUT, COLOR_RED, COLOR_BLACK);
+        printw("Welcome to file splitter\n");
+        printw("Press 1 to split a file\n");
+        printw("Press 2 to merge a file\n");
+        printw("Press any other key to quit\n");
+        refresh();
+        char selector = getch();
+        clear();
         if(selector == '1'){
             fileSelection(inputFileName, outputFileName);
             chunkSelection(&fileChunkSize);
             if(splitFile(inputFileName, outputFileName, fileChunkSize) == 1){
-                fprintf(stderr, "There was an error in splitFile\n");
+                errorMsg(1, inputFileName, outputFileName);
+            } else {
+                completedSplitMsg(inputFileName, outputFileName);
             }
-            free(inputFileName);
-            free(outputFileName);
         } else if(selector == '2'){
             fileSelection(inputFileName, outputFileName);
             if(mergeFile(inputFileName, outputFileName) == 1){
-                fprintf(stderr, "There was an error in mergeFile\n");
+                errorMsg(2, inputFileName, outputFileName);
+            } else {
+                completedMergeMsg(inputFileName, outputFileName);
             }
-            free(inputFileName);
-            free(outputFileName);
         } else{
-            printf("Try again\n");
+            printw("Try again\n");
+            refresh();
             free(inputFileName);
             free(outputFileName);
+            endwin();
         }
     }
     return 0;

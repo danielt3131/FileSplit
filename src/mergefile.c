@@ -29,6 +29,10 @@ int mergeFile(char *inputFileName, char *outputFileName){
     snprintf(temp, tempSize, "%s.0", inputFileName);
     // Calculate the size of the needed buffer by opening the first file slice, then closing the file slice
     FILE *splitFileOpen = fopen(temp, "rb");
+    if (splitFileOpen == NULL){
+        free(temp);
+        return(EXIT_FAILURE);
+    }
     unsigned long long bufferSize = fileSize(splitFileOpen);
     fclose(splitFileOpen);
     unsigned char *buffer = (unsigned char *) malloc((bufferSize) * sizeof(unsigned char));
@@ -59,7 +63,7 @@ int mergeFile(char *inputFileName, char *outputFileName){
             break;
         }
         splitFileSize = fileSize(splitFileOpen);
-        printf("%llu\n", splitFileSize);
+        // printf("%llu\n", splitFileSize);
         fread(buffer, splitFileSize, 1, splitFileOpen);
         fwrite(buffer, splitFileSize, 1, mergedFile);
         fclose(splitFileOpen);
