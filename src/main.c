@@ -66,7 +66,7 @@ int main (int argc, char **argv){
             fprintf(stderr, "Wrong command line arguments\n");
             free(inputFileName);
             free(outputFileName);
-            return EXIT_FAILURE;
+            return (EXIT_FAILURE);
         }
     } else {
         printf("Welcome to file splitter\n");
