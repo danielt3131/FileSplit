@@ -49,7 +49,7 @@ void fileSelection(char *inputFileName, char *outputFileName){
 void chunkSelection(unsigned long long *chunkSize){
     printf("Do you want to set the size for each file slice the default value is %d\n", MAX_FILENAME_LENGTH);
     printf("If so then press 1 otherwise press any other key\n");
-    char selector = putc(stdin);
+    char selector = getc(stdin);
     if (selector == '1'){
         printf("Enter in the size you want each file slice to be\n");
         scanf("%llu", chunkSize);
@@ -75,7 +75,7 @@ int main (int argc, char **argv){
         }
         strcpy(inputFileName, argv[1]);
         strcpy(outputFileName, argv[2]);
-        if (argv > 4){
+        if (argc > 4){
             fileChunkSize = atoll(argv[4]);
         }
         if (atoi(argv[3]) == 1){
