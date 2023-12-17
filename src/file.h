@@ -31,7 +31,7 @@ void mergeFile(char *inputFileName, char *outputFileName);
  * @param *outputFileName The name.* of splitted files where * is the integer extension
  */
 
-void splitFile(char *inputFileName, char *outputFileName);
+int splitFile(char *inputFileName, char *outputFileName);
 
 /*
  * Computes the size of a file

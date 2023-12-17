@@ -18,7 +18,7 @@
 #include <string.h>
 #include "file.h"
 
-void splitFile(char *inputFileName, char *outputFileName){
+int splitFile(char *inputFileName, char *outputFileName){
     unsigned long long fileChunkSize = 1048576;
     unsigned char *buffer = (unsigned char *) malloc((fileChunkSize) * sizeof(unsigned char)); // 1 MiB buffer
     if(buffer == NULL){
