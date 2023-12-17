@@ -44,8 +44,8 @@ int main (int argc, char **argv){
             fprintf(stderr, "Unable to allocate memory. Now terminating\n");
             return (EXIT_FAILURE);
         }
-        strcpy(inputFileName, argv[1]);
-        strcpy(outputFileName, argv[2]);
+        strncpy(inputFileName, argv[1], MAX_FILENAME_LENGTH);
+        strncpy(outputFileName, argv[2], MAX_FILENAME_LENGTH);
         if (argc > 4){
             fileChunkSize = atoll(argv[4]);
         }
