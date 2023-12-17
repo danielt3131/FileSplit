@@ -20,7 +20,7 @@
 #include <ctype.h>
 #include "file.h"
 
-int mergeFile(char *inputFileName, char *outputFileName){
+void mergeFile(char *inputFileName, char *outputFileName){
     unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
     FILE *mergedFile = fopen(inputFileName, "wb");
     FILE *splitFileOpen = NULL;
@@ -38,7 +38,7 @@ int mergeFile(char *inputFileName, char *outputFileName){
     } else{
         while(dirEntry = readdir(dir) != NULL){
             for(unsigned long long i = 0; i <= strlen(dirEntry->d_name); i++){
-                if(dirEntry->d_name[i] == '.' && isdigit(dirEntry->d_name[i + 1] == 1)){
+                if(dirEntry->d_name[i] == '.' && isdigit(dirEntry->d_name[i + 1] == 1){
                     numberOfSplitFiles++;
                     break;
                 }
@@ -46,7 +46,7 @@ int mergeFile(char *inputFileName, char *outputFileName){
         }
         closedir(dir);
     }
-    char *temp = (char *) malloc ((strlen(outputFileName) + numberOfSplitFiles + 1));
+    char *temp = (char *) malloc ((strlen(outputFileName) + numberOfSplitFiles + 1);
     for(unsigned long long i = 0; i < numberOfSplitFiles; i++){
         sprintf(temp, "%s.%llu", outputFileName, i);
         splitFileOpen = fopen(temp, "rb");

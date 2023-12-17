@@ -18,7 +18,7 @@
 #include <string.h>
 #include "file.h"
 
-int splitFile(char *inputFileName, char *outputFileName){
+void splitFile(char *inputFileName, char *outputFileName){
     unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
     unsigned long long fileChunkSize = 1048576;
     FILE *inputFile = fopen(inputFileName, "rb");
@@ -39,7 +39,7 @@ int splitFile(char *inputFileName, char *outputFileName){
         printf("%llu\n", i);
     }
     printf("%llu\n", (inputFileSize % fileChunkSize));
-    printf("%llu\n", (inputFileSize - (numberOfChunks * fileChunkSize)));
+    printf("%llu\n", (fileSize - (numberOfChunks * fileChunkSize)));
     if (inputFileSize % fileChunkSize != 0){
         unsigned long long remainderChunckSize = inputFileSize % numberOfChunks;
         fread(buffer, remainderChunckSize, 1, inputFile);
