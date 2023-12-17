@@ -21,17 +21,18 @@
  * Merges back n slices back into the original file
  * @param *inputFileName The name of the splitted file
  * @param *outputFileName The name of the merged file
- * @return Nothing
+ * @return The return value of 0 if sucessfull
  */
-void mergeFile(char *inputFileName, char *outputFileName);
+int mergeFile(char *inputFileName, char *outputFileName);
 
 /*
  * Splits a file into n slices
  * @param *inputFileName The name of the file to split
  * @param *outputFileName The name.* of splitted files where * is the integer extension
+ * @return The return value of 0 if sucessfull
  */
 
-void splitFile(char *inputFileName, char *outputFileName);
+int splitFile(char *inputFileName, char *outputFileName);
 
 /*
  * Computes the size of a file
