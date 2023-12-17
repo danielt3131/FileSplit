@@ -21,11 +21,27 @@
 int main (int argc, char **argv){
     char *inputFileName = NULL;
     char *outputFileName = NULL;
-    if (argc > 2){
+    if (argc > 3){
         inputFileName = (char *) malloc(strlen(argv[1]) + 1);
         outputFileName = (char *) malloc(strlen(argv[2]) + 1);
+        if (inputFileName == NULL || outputFileName == NULL){
+            fprintf(stderr, "Unable to allocate memory. Now terminating\n");
+            return (EXIT_FAILURE);
+        }
         strcpy(inputFileName, argv[1]);
         strcpy(outputFileName, argv[2]);
+        if (atoi(argv[3]) == 0){
+            splitFile(inputFileName, outputFileName);
+        } else if(atoi(argv[3]) == 1){
+            mergeFile(inputFileName, outputFileName);
+        } else{
+            fprintf(stderr, "Wrong command line arguments\n");
+            free(inputFileName);
+            free(outputFileName);
+            return EXIT_FAILURE;
+        }
+    } else {
+        printf("Welcome to file splitter")
     }
     return 0;
 }
