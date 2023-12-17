@@ -76,7 +76,7 @@ int main (int argc, char **argv){
         char selector = getc(stdin);
         if(selector == '1'){
             fileSelection(inputFileName, outputFileName);
-            mergeFile(inputFileName, outputFileName);
+            splitFile(inputFileName, outputFileName);
         } else if(selector == '2'){
             fileSelection(inputFileName, outputFileName);
             mergeFile(inputFileName, outputFileName);
