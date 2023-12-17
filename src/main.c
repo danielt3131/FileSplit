@@ -22,13 +22,13 @@
 void fileSelection(char *inputFileName, char *outputFileName){
     
     // Allocating inputFileName from the heap
-    inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
+    //inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     if (inputFileName == NULL){
         fprintf(stderr, "Unable to allocate memory. Now terminating\n");
         exit(EXIT_FAILURE);
     }
     // Allocationg outputFileName from the heap
-    outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
+    //outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     if (outputFileName == NULL){
         free(inputFileName);
         fprintf(stderr, "Unable to allocate memory. Now terminating\n");
@@ -40,15 +40,17 @@ void fileSelection(char *inputFileName, char *outputFileName){
     fgets(inputFileName, MAX_FILENAME_LENGTH, stdin);
     // Remove LF
     inputFileName[(strlen(inputFileName) - 1)] = '\0';
+    printf("%s", inputFileName);
     printf("Please type in the name of the output file\n");
     fgets(outputFileName, MAX_FILENAME_LENGTH, stdin);
     // Remove LF
     outputFileName[(strlen(outputFileName) - 1)] = '\0';
+    printf("%s", outputFileName);
 }
 
 int main (int argc, char **argv){
-    char *inputFileName = NULL;
-    char *outputFileName = NULL;
+    char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
+    char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     if (argc > 3){
         inputFileName = (char *) malloc(strlen(argv[1]) + 1);
         if (inputFileName == NULL){
@@ -81,12 +83,19 @@ int main (int argc, char **argv){
         char selector = getc(stdin);
         if(selector == '1'){
             fileSelection(inputFileName, outputFileName);
+            printf("%s\n", inputFileName);
             splitFile(inputFileName, outputFileName);
+            free(inputFileName);
+            free(outputFileName);
         } else if(selector == '2'){
             fileSelection(inputFileName, outputFileName);
             mergeFile(inputFileName, outputFileName);
+            free(inputFileName);
+            free(outputFileName);
         } else{
             printf("Try again\n");
+            free(inputFileName);
+            free(outputFileName);
         }
     }
     return 0;
