@@ -79,6 +79,31 @@ void completedSplitMsg(char *inputFileName, char *outputFileName){
     endwin();
 }
 
+void errorMsg(short type, char *inputFileName, char *outputFileName){
+    switch (type){
+    case 1:
+        attron(COLOR_PAIR(ERROR_OUTPUT));
+        printw("There was an error in splitFile\n");
+        refresh();
+        sleep(5);
+        free(inputFileName);
+        free(outputFileName);
+        endwin();
+        break;
+    case 2:
+        attron(COLOR_PAIR(ERROR_OUTPUT));
+        printw("There was an error in mergeFile\n");
+        refresh();
+        sleep(5);
+        free(inputFileName);
+        free(outputFileName);
+        endwin();
+        break;
+    default:
+        break;
+    }
+}
+
 // CLI arguments -> InputFile, OutputFile, mode selector, FileChunkSize
 int main (int argc, char **argv){
     char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
@@ -132,26 +157,21 @@ int main (int argc, char **argv){
             fileSelection(inputFileName, outputFileName);
             chunkSelection(&fileChunkSize);
             if(splitFile(inputFileName, outputFileName, fileChunkSize) == 1){
-                attron(COLOR_PAIR(ERROR_OUTPUT));
-                printw("There was an error in splitFile\n");
-                refresh();
-                sleep(5);
-                free(inputFileName);
-                free(outputFileName);
-                endwin();
+                errorMsg(1, inputFileName, outputFileName);
             } else {
                 completedSplitMsg(inputFileName, outputFileName);
             }
         } else if(selector == '2'){
             fileSelection(inputFileName, outputFileName);
             if(mergeFile(inputFileName, outputFileName) == 1){
-                attron(COLOR_PAIR(ERROR_OUTPUT));
-                printw("There was an error in mergeFile\n");
-                refresh();
-                sleep(5);
-                free(inputFileName);
-                free(outputFileName);
-                endwin();
+                errorMsg(2, inputFileName, outputFileName);
+                // attron(COLOR_PAIR(ERROR_OUTPUT));
+                // printw("There was an error in mergeFile\n");
+                // refresh();
+                // sleep(5);
+                // free(inputFileName);
+                // free(outputFileName);
+                // endwin();
             } else {
                 completedMergeMsg(inputFileName, outputFileName);
             }
