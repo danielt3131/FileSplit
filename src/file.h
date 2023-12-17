@@ -31,7 +31,7 @@ int mergeFile(char *inputFileName, char *outputFileName);
  * @param *outputFileName The name.* of splitted files where * is the integer extension
  */
 
-int splitFile(char *inputFileName, char *outputFileName);
+int splitFile(char *inputFileName, char *outputFileName, unsigned long long fileChunkSize);
 
 /*
  * Computes the size of a file
@@ -40,4 +40,4 @@ int splitFile(char *inputFileName, char *outputFileName);
  */
 unsigned long long fileSize(FILE *file);
 
-#endif FILE_H
+#endif //FILE_H

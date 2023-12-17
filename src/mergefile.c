@@ -19,27 +19,31 @@
 #include <ctype.h>
 #include "file.h"
 #include <limits.h>
-#define BUFFER_SIZE 1048576
 
 int mergeFile(char *inputFileName, char *outputFileName){
-    unsigned char *buffer = (unsigned char *) malloc((BUFFER_SIZE) * sizeof(unsigned char)); // 1 MiB buffer
+    size_t tempSize = strlen(inputFileName) + 50;
+    char *temp = (char *) malloc(tempSize);
+    if(temp == NULL){
+        return(EXIT_FAILURE);
+    }
+    snprintf(temp, tempSize, "%s.0", inputFileName);
+    // Calculate the size of the needed buffer by opening the first file slice, then closing the file slice
+    FILE *splitFileOpen = fopen(temp, "rb");
+    unsigned long long bufferSize = fileSize(splitFileOpen);
+    fclose(splitFileOpen);
+    unsigned char *buffer = (unsigned char *) malloc((bufferSize) * sizeof(unsigned char));
     if(buffer == NULL){
+        free(temp);
         return(EXIT_FAILURE);
     }
     FILE *mergedFile = fopen(outputFileName, "wb");
     if (mergedFile == NULL){
+        free(temp);
         free(buffer);
         return(EXIT_FAILURE);
     }
-    FILE *splitFileOpen = NULL;
     unsigned long long splitFileSize = 0;
     unsigned long long i = 0;
-    size_t tempSize = strlen(inputFileName) + 50;
-    char *temp = (char *) malloc(tempSize);
-    if(temp == NULL){
-        free(buffer);
-        return(EXIT_FAILURE);
-    }
     while(1){
         if (i == ULLONG_MAX){
             fprintf(stderr, "The number of file segments to merge have exceeded the 64 bit unsigned limit\n");
