@@ -19,92 +19,13 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include "file.h"
+#include "message.h"
+#include "selection.h"
 #define MAX_FILENAME_LENGTH 100
 #define DEFAULT_CHUNK_SIZE 1048576
 #define ERROR_OUTPUT 1
 #define SPLIT_FILE 1
 #define MERGE_FILE 2
-void fileSelection(char *inputFileName, char *outputFileName){
-    
-    // Allocating inputFileName from the heap
-    //inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
-    if (inputFileName == NULL){
-        fprintf(stderr, "Unable to allocate memory. Now terminating\n");
-        exit(EXIT_FAILURE);
-    }
-    // Allocationg outputFileName from the heap
-    //outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
-    if (outputFileName == NULL){
-        free(inputFileName);
-        fprintf(stderr, "Unable to allocate memory. Now terminating\n");
-        exit(EXIT_FAILURE);
-    }
-    refresh();
-    printw("Please type in the name of the input file\n");
-    refresh();
-    getnstr(inputFileName, MAX_FILENAME_LENGTH);
-    clear();
-    printw("Please type in the name of the output file\n");
-    refresh();
-    getnstr(outputFileName, MAX_FILENAME_LENGTH);
-    clear();
-}
-
-void chunkSelection(unsigned long long *chunkSize){
-    printw("Do you want to set the size for each file slice the default value is %d\n", DEFAULT_CHUNK_SIZE);
-    printw("If so then press 1 otherwise press any other key\n");
-    char selector = getch();
-    if (selector == '1'){
-        printw("Enter in the size you want each file slice to be\n");
-        scanw("%llu", chunkSize);
-    }
-    clear();
-}
-
-void completedMergeMsg(char *inputFileName, char *outputFileName){
-    clear();
-    printw("The file(s) of %s have been merged into %s\n", inputFileName, outputFileName);
-    refresh();
-    free(inputFileName);
-    free(outputFileName);
-    sleep(5);
-    endwin();
-}
-
-void completedSplitMsg(char *inputFileName, char *outputFileName){
-    clear();
-    printw("The file of %s have been splited into %s\n", inputFileName, outputFileName);
-    refresh();
-    free(inputFileName);
-    free(outputFileName);
-    sleep(5);
-    endwin();
-}
-
-void errorMsg(short type, char *inputFileName, char *outputFileName){
-    switch (type){
-    case SPLIT_FILE:
-        attron(COLOR_PAIR(ERROR_OUTPUT));
-        printw("There was an error in splitFile\n");
-        refresh();
-        sleep(5);
-        free(inputFileName);
-        free(outputFileName);
-        endwin();
-        break;
-    case MERGE_FILE:
-        attron(COLOR_PAIR(ERROR_OUTPUT));
-        printw("There was an error in mergeFile\n");
-        refresh();
-        sleep(5);
-        free(inputFileName);
-        free(outputFileName);
-        endwin();
-        break;
-    default:
-        break;
-    }
-}
 
 // CLI arguments -> InputFile, OutputFile, mode selector, FileChunkSize
 int main (int argc, char **argv){
