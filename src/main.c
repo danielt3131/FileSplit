@@ -167,13 +167,6 @@ int main (int argc, char **argv){
             fileSelection(inputFileName, outputFileName);
             if(mergeFile(inputFileName, outputFileName) == 1){
                 errorMsg(2, inputFileName, outputFileName);
-                // attron(COLOR_PAIR(ERROR_OUTPUT));
-                // printw("There was an error in mergeFile\n");
-                // refresh();
-                // sleep(5);
-                // free(inputFileName);
-                // free(outputFileName);
-                // endwin();
             } else {
                 completedMergeMsg(inputFileName, outputFileName);
             }
