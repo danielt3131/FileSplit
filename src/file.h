@@ -23,7 +23,7 @@
  * @param *outputFileName The name of the merged file
  * @return Nothing
  */
-void mergeFile(char *inputFileName, char *outputFileName);
+int mergeFile(char *inputFileName, char *outputFileName);
 
 /*
  * Splits a file into n slices

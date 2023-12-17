@@ -21,7 +21,7 @@
 #include <limits.h>
 #define BUFFER_SIZE 1048576
 
-void mergeFile(char *inputFileName, char *outputFileName){
+int mergeFile(char *inputFileName, char *outputFileName){
     unsigned char *buffer = (unsigned char *) malloc((BUFFER_SIZE) * sizeof(unsigned char)); // 1 MiB buffer
     if(buffer == NULL){
         exit(EXIT_FAILURE);
