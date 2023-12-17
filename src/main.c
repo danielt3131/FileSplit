@@ -18,6 +18,7 @@
 #include <string.h> 
 #include <unistd.h>
 #include <ncurses.h>
+#include <curses.h>
 #include "file.h"
 #include "message.h"
 #include "selection.h"
@@ -33,12 +34,10 @@ int main (int argc, char **argv){
     char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     unsigned long long fileChunkSize = DEFAULT_CHUNK_SIZE;
     if (argc > 3){
-        inputFileName = (char *) malloc(strlen(argv[1]) + 1);
         if (inputFileName == NULL){
             fprintf(stderr, "Unable to allocate memory. Now terminating\n");
             return (EXIT_FAILURE);
         }
-        outputFileName = (char *) malloc(strlen(argv[2]) + 1);
         if (outputFileName == NULL){
             free(inputFileName);
             fprintf(stderr, "Unable to allocate memory. Now terminating\n");
@@ -51,8 +50,14 @@ int main (int argc, char **argv){
         }
         if (atoi(argv[3]) == SPLIT_FILE){
             splitFile(inputFileName, outputFileName, fileChunkSize);
+            free(inputFileName);
+            free(outputFileName);
+            return (EXIT_SUCCESS);
         } else if (atoi(argv[3]) == MERGE_FILE){
             mergeFile(inputFileName, outputFileName);
+            free(inputFileName);
+            free(outputFileName);
+            return (EXIT_SUCCESS);
         } else{
             fprintf(stderr, "Wrong command line arguments\n");
             free(inputFileName);
