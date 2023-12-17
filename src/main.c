@@ -21,6 +21,7 @@
 #include "file.h"
 #define MAX_FILENAME_LENGTH 100
 #define DEFAULT_CHUNK_SIZE 1048576
+#define ERROR_OUTPUT 1
 void fileSelection(char *inputFileName, char *outputFileName){
     
     // Allocating inputFileName from the heap
@@ -111,7 +112,15 @@ int main (int argc, char **argv){
             return (EXIT_FAILURE);
         }
     } else {
+        // Init ncurses
         initscr();
+        start_color();
+        if(has_colors() == false){
+            endwin();
+            printf("Terminal doesn't support colors\n");
+            exit(EXIT_FAILURE);
+        }
+        init_pair(ERROR_OUTPUT, COLOR_RED, COLOR_BLACK);
         printw("Welcome to file splitter\n");
         printw("Press 1 to split a file\n");
         printw("Press 2 to merge a file\n");
@@ -123,7 +132,10 @@ int main (int argc, char **argv){
             fileSelection(inputFileName, outputFileName);
             chunkSelection(&fileChunkSize);
             if(splitFile(inputFileName, outputFileName, fileChunkSize) == 1){
-                fprintf(stderr, "There was an error in splitFile\n");
+                attron(COLOR_PAIR(ERROR_OUTPUT));
+                printw("There was an error in splitFile\n");
+                refresh();
+                sleep(5);
                 free(inputFileName);
                 free(outputFileName);
                 endwin();
@@ -133,7 +145,10 @@ int main (int argc, char **argv){
         } else if(selector == '2'){
             fileSelection(inputFileName, outputFileName);
             if(mergeFile(inputFileName, outputFileName) == 1){
-                fprintf(stderr, "There was an error in mergeFile\n");
+                attron(COLOR_PAIR(ERROR_OUTPUT));
+                printw("There was an error in mergeFile\n");
+                refresh();
+                sleep(5);
                 free(inputFileName);
                 free(outputFileName);
                 endwin();
