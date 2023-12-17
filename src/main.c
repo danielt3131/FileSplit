@@ -25,15 +25,16 @@ void fileSelection(char *inputFileName, char *outputFileName){
     inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     if (inputFileName == NULL){
         fprintf(stderr, "Unable to allocate memory. Now terminating\n");
-        return (EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
     // Allocationg outputFileName from the heap
     outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     if (outputFileName == NULL){
         free(inputFileName);
         fprintf(stderr, "Unable to allocate memory. Now terminating\n");
-        return (EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
+    fflush(stdin);
     printf("Please type in the name of the input file\n");
     fgets(inputFileName, MAX_FILENAME_LENGTH, stdin);
     printf("Please type in the name of the output file\n");
@@ -72,18 +73,17 @@ int main (int argc, char **argv){
         printf("Press 1 to split a file\n");
         printf("Press 2 to merge a file\n");
         printf("Press anyother key to quit\n");
-        char selector = getc(stdin);
-        switch (selector){
-            case '1':
-                fileSelection(inputFileName, outputFileName);
-                splitFile(inputFileName, outputFileName);
-                break;
-            case '2':
-                fileSelection(inputFileName, outputFileName);
-                splitFile(inputFileName, outputFileName);
-                break;
-            default:
-                break;
+        char selector;
+        scanf("%c\n", &selector);
+        putc(selector, stdout);
+        if(selector == '1'){
+            fileSelection(inputFileName, outputFileName);
+            mergeFile(inputFileName, outputFileName);
+        } else if(selector == '2'){
+            fileSelection(inputFileName, outputFileName);
+            mergeFile(inputFileName, outputFileName);
+        } else{
+            printf("Try again\n");
         }
     }
     return 0;
