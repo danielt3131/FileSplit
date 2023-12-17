@@ -40,4 +40,4 @@ int splitFile(char *inputFileName, char *outputFileName, unsigned long long file
  */
 unsigned long long fileSize(FILE *file);
 
-#endif FILE_H
+#endif //FILE_H
