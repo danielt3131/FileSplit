@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>
 #include <ctype.h>
 #include "file.h"
 
@@ -26,46 +25,10 @@ void mergeFile(char *inputFileName, char *outputFileName){
     FILE *splitFileOpen = NULL;
     unsigned long long splitFileSize = 0;
     unsigned long long i = 0;
-    /*
-     * Calculate the number of split files
-     */
-   /*
-    struct dirent *dirEntry;
-    DIR *dir = opendir(".");
-    unsigned long long numberOfSplitFiles = 0;
-    if (dir == NULL){
-        fprintf(stderr, "Unable to open the working directory\n");
-        exit(EXIT_FAILURE);
-    } else{
-        while(dirEntry = readdir(dir) != NULL){
-            for(unsigned long long i = 0; i <= strlen(dirEntry->d_name); i++){
-                if(dirEntry->d_name[i] == '.' && isdigit(dirEntry->d_name[i + 1] == 1)){
-                    numberOfSplitFiles++;
-                    break;
-                }
-            }  
-        }
-        closedir(dir);
-    } 
-    */
-    //char *temp = (char *) malloc ((strlen(outputFileName) + numberOfSplitFiles + 1));
-    /* for(unsigned long long i = 0; i < numberOfSplitFiles; i++){
-        sprintf(temp, "%s.%llu", outputFileName, i);
-        splitFileOpen = fopen(temp, "rb");
-        if(splitFileOpen == NULL){
-            break;
-        }
-        fseeko(splitFileOpen, 0, SEEK_END);
-        splitFileSize = ftello(splitFileOpen);
-        printf("%llu\n", splitFileSize);
-        fseeko(splitFileOpen, 0, SEEK_SET);
-        fread(buffer, splitFileSize, 1, splitFileOpen);
-        fwrite(buffer, splitFileSize, 1, mergedFile);
-        fclose(splitFileOpen);
-    } */
-    char *temp = (char *) malloc(strlen(inputFileName) + 50);
+    size_t tempSize = strlen(inputFileName) + 50;
+    char *temp = (char *) malloc(tempSize);
     while(1){
-        sprintf(temp, "%s.%llu", inputFileName, i);
+        snprintf(temp, tempSize, "%s.%llu", inputFileName, i);
         splitFileOpen = fopen(temp, "rb");
         if(splitFileOpen == NULL){
             break;

@@ -28,11 +28,12 @@ void splitFile(char *inputFileName, char *outputFileName){
     }
     unsigned long long inputFileSize = fileSize(inputFile);
     unsigned long long numberOfChunks = inputFileSize / fileChunkSize;
-    char *temp = (char *) malloc(strlen(outputFileName) + numberOfChunks + 2);
+    size_t tempSize = strlen(outputFileName) + numberOfChunks + 2;
+    char *temp = (char *) malloc(tempSize);
     unsigned long long i;
     for (i = 0; i < numberOfChunks; i++){
         fread(buffer, fileChunkSize, 1, inputFile);
-        sprintf(temp, "%s.%llu", outputFileName, i);
+        snprintf(temp, tempSize, "%s.%llu", outputFileName, i);
         FILE *output = fopen(temp, "wb");
         fwrite(buffer, fileChunkSize, 1, output);
         fclose(output);
@@ -43,7 +44,7 @@ void splitFile(char *inputFileName, char *outputFileName){
     if (inputFileSize % fileChunkSize != 0){
         unsigned long long remainderChunckSize = inputFileSize % fileChunkSize;
         fread(buffer, remainderChunckSize, 1, inputFile);
-        sprintf(temp, "%s.%llu", outputFileName, i);
+        snprintf(temp, tempSize, "%s.%llu", outputFileName, i);
         FILE *output = fopen(temp, "wb");
         fwrite(buffer, remainderChunckSize, 1, output);
         fclose(output);
