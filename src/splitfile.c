@@ -39,7 +39,7 @@ void splitFile(char *inputFileName, char *outputFileName){
         printf("%llu\n", i);
     }
     printf("%llu\n", (inputFileSize % fileChunkSize));
-    printf("%llu\n", (fileSize - (numberOfChunks * fileChunkSize)));
+    printf("%llu\n", (inputFileSize - (numberOfChunks * fileChunkSize)));
     if (inputFileSize % fileChunkSize != 0){
         unsigned long long remainderChunckSize = inputFileSize % numberOfChunks;
         fread(buffer, remainderChunckSize, 1, inputFile);
