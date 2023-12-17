@@ -18,7 +18,6 @@
 #include <string.h> 
 #include <unistd.h>
 #include <ncurses.h>
-#include <curses.h>
 #include "file.h"
 #include "message.h"
 #include "selection.h"
