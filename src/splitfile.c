@@ -41,7 +41,7 @@ void splitFile(char *inputFileName, char *outputFileName){
     printf("%llu\n", (inputFileSize % fileChunkSize));
     printf("%llu\n", (inputFileSize - (numberOfChunks * fileChunkSize)));
     if (inputFileSize % fileChunkSize != 0){
-        unsigned long long remainderChunckSize = inputFileSize % numberOfChunks;
+        unsigned long long remainderChunckSize = inputFileSize % fileChunkSize;
         fread(buffer, remainderChunckSize, 1, inputFile);
         sprintf(temp, "%s.%llu", outputFileName, i);
         FILE *output = fopen(temp, "wb");

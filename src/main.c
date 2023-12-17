@@ -40,12 +40,10 @@ void fileSelection(char *inputFileName, char *outputFileName){
     fgets(inputFileName, MAX_FILENAME_LENGTH, stdin);
     // Remove LF
     inputFileName[(strlen(inputFileName) - 1)] = '\0';
-    printf("%s", inputFileName);
     printf("Please type in the name of the output file\n");
     fgets(outputFileName, MAX_FILENAME_LENGTH, stdin);
     // Remove LF
     outputFileName[(strlen(outputFileName) - 1)] = '\0';
-    printf("%s", outputFileName);
 }
 
 int main (int argc, char **argv){
@@ -83,7 +81,6 @@ int main (int argc, char **argv){
         char selector = getc(stdin);
         if(selector == '1'){
             fileSelection(inputFileName, outputFileName);
-            printf("%s\n", inputFileName);
             splitFile(inputFileName, outputFileName);
             free(inputFileName);
             free(outputFileName);

@@ -21,14 +21,15 @@
 #include "file.h"
 
 void mergeFile(char *inputFileName, char *outputFileName){
-    unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
-    FILE *mergedFile = fopen(inputFileName, "wb");
+    unsigned char *buffer = (unsigned char *) malloc((1048576) * sizeof(unsigned char)); // 1 MiB buffer
+    FILE *mergedFile = fopen(outputFileName, "wb");
     FILE *splitFileOpen = NULL;
-    unsigned long long splitFileSize;
+    unsigned long long splitFileSize = 0;
     unsigned long long i = 0;
     /*
      * Calculate the number of split files
      */
+   /*
     struct dirent *dirEntry;
     DIR *dir = opendir(".");
     unsigned long long numberOfSplitFiles = 0;
@@ -45,9 +46,10 @@ void mergeFile(char *inputFileName, char *outputFileName){
             }  
         }
         closedir(dir);
-    }
-    char *temp = (char *) malloc ((strlen(outputFileName) + numberOfSplitFiles + 1));
-    for(unsigned long long i = 0; i < numberOfSplitFiles; i++){
+    } 
+    */
+    //char *temp = (char *) malloc ((strlen(outputFileName) + numberOfSplitFiles + 1));
+    /* for(unsigned long long i = 0; i < numberOfSplitFiles; i++){
         sprintf(temp, "%s.%llu", outputFileName, i);
         splitFileOpen = fopen(temp, "rb");
         if(splitFileOpen == NULL){
@@ -57,6 +59,19 @@ void mergeFile(char *inputFileName, char *outputFileName){
         splitFileSize = ftello(splitFileOpen);
         printf("%llu\n", splitFileSize);
         fseeko(splitFileOpen, 0, SEEK_SET);
+        fread(buffer, splitFileSize, 1, splitFileOpen);
+        fwrite(buffer, splitFileSize, 1, mergedFile);
+        fclose(splitFileOpen);
+    } */
+    char *temp = (char *) malloc(strlen(inputFileName) + 50);
+    while(1){
+        sprintf(temp, "%s.%llu", inputFileName, i);
+        splitFileOpen = fopen(temp, "rb");
+        if(splitFileOpen == NULL){
+            break;
+        }
+        splitFileSize = fileSize(splitFileOpen);
+        printf("%llu\n", splitFileSize);
         fread(buffer, splitFileSize, 1, splitFileOpen);
         fwrite(buffer, splitFileSize, 1, mergedFile);
         fclose(splitFileOpen);
