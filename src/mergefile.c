@@ -24,12 +24,12 @@
 int mergeFile(char *inputFileName, char *outputFileName){
     unsigned char *buffer = (unsigned char *) malloc((BUFFER_SIZE) * sizeof(unsigned char)); // 1 MiB buffer
     if(buffer == NULL){
-        exit(EXIT_FAILURE);
+        return(EXIT_FAILURE);
     }
     FILE *mergedFile = fopen(outputFileName, "wb");
     if (mergedFile == NULL){
         free(buffer);
-        exit(EXIT_FAILURE);
+        return(EXIT_FAILURE);
     }
     FILE *splitFileOpen = NULL;
     unsigned long long splitFileSize = 0;
@@ -38,7 +38,7 @@ int mergeFile(char *inputFileName, char *outputFileName){
     char *temp = (char *) malloc(tempSize);
     if(temp == NULL){
         free(buffer);
-        exit(EXIT_FAILURE);
+        return(EXIT_FAILURE);
     }
     while(1){
         if (i == ULLONG_MAX){
@@ -47,7 +47,7 @@ int mergeFile(char *inputFileName, char *outputFileName){
             fclose(mergedFile);
             free(temp);
             free(buffer);
-            exit(EXIT_FAILURE);
+            return(EXIT_FAILURE);
         }
         snprintf(temp, tempSize, "%s.%llu", inputFileName, i);
         splitFileOpen = fopen(temp, "rb");
@@ -64,4 +64,5 @@ int mergeFile(char *inputFileName, char *outputFileName){
     free(buffer);
     free(temp);
     fclose(mergedFile);
+    return(EXIT_SUCCESS);
 }

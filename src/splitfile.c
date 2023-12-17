@@ -22,12 +22,12 @@ int splitFile(char *inputFileName, char *outputFileName){
     unsigned long long fileChunkSize = 1048576;
     unsigned char *buffer = (unsigned char *) malloc((fileChunkSize) * sizeof(unsigned char)); // 1 MiB buffer
     if(buffer == NULL){
-        exit(EXIT_FAILURE);
+        return(EXIT_FAILURE);
     }
     FILE *inputFile = fopen(inputFileName, "rb");
     if (inputFile == NULL){
         free(buffer);
-        exit(EXIT_FAILURE);
+        return(EXIT_FAILURE);
     }
     unsigned long long inputFileSize = fileSize(inputFile);
     unsigned long long numberOfChunks = inputFileSize / fileChunkSize;
@@ -35,7 +35,7 @@ int splitFile(char *inputFileName, char *outputFileName){
     char *temp = (char *) malloc(tempSize);
     if(temp == NULL){
         free(buffer);
-        exit(EXIT_FAILURE);
+        return(EXIT_FAILURE);
     }
     unsigned long long i;
     for (i = 0; i < numberOfChunks; i++){
@@ -59,4 +59,5 @@ int splitFile(char *inputFileName, char *outputFileName){
     fclose(inputFile);
     free(buffer);
     free(temp);
+    return(EXIT_SUCCESS);
 }
