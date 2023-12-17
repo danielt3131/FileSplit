@@ -81,12 +81,16 @@ int main (int argc, char **argv){
         char selector = getc(stdin);
         if(selector == '1'){
             fileSelection(inputFileName, outputFileName);
-            splitFile(inputFileName, outputFileName);
+            if(splitFile(inputFileName, outputFileName) == 1){
+                fprintf(stderr, "There was an error in splitFile\n");
+            }
             free(inputFileName);
             free(outputFileName);
         } else if(selector == '2'){
             fileSelection(inputFileName, outputFileName);
-            mergeFile(inputFileName, outputFileName);
+            if(mergeFile(inputFileName, outputFileName) == 1){
+                fprintf(stderr, "There was an error in mergeFile\n");
+            }
             free(inputFileName);
             free(outputFileName);
         } else{
