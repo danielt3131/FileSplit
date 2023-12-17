@@ -21,6 +21,9 @@
 void splitFile(char *inputFileName, char *outputFileName){
     unsigned long long fileChunkSize = 1048576;
     unsigned char *buffer = (unsigned char *) malloc((fileChunkSize) * sizeof(unsigned char)); // 1 MiB buffer
+    if(buffer == NULL){
+        exit(EXIT_FAILURE);
+    }
     FILE *inputFile = fopen(inputFileName, "rb");
     if (inputFile == NULL){
         free(buffer);
@@ -30,6 +33,10 @@ void splitFile(char *inputFileName, char *outputFileName){
     unsigned long long numberOfChunks = inputFileSize / fileChunkSize;
     size_t tempSize = strlen(outputFileName) + numberOfChunks + 2;
     char *temp = (char *) malloc(tempSize);
+    if(temp == NULL){
+        free(buffer);
+        exit(EXIT_FAILURE);
+    }
     unsigned long long i;
     for (i = 0; i < numberOfChunks; i++){
         fread(buffer, fileChunkSize, 1, inputFile);

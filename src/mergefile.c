@@ -22,16 +22,30 @@
 
 void mergeFile(char *inputFileName, char *outputFileName){
     unsigned char *buffer = (unsigned char *) malloc((1048576) * sizeof(unsigned char)); // 1 MiB buffer
+    if(buffer == NULL){
+        exit(EXIT_FAILURE);
+    }
     FILE *mergedFile = fopen(outputFileName, "wb");
+    if (mergedFile == NULL){
+        free(buffer);
+        exit(EXIT_FAILURE);
+    }
     FILE *splitFileOpen = NULL;
     unsigned long long splitFileSize = 0;
     unsigned long long i = 0;
     size_t tempSize = strlen(inputFileName) + 50;
     char *temp = (char *) malloc(tempSize);
+    if(temp == NULL){
+        free(buffer);
+        exit(EXIT_FAILURE);
+    }
     while(1){
         if (i == ULLONG_MAX){
             fprintf(stderr, "The number of file segments to merge have exceeded the 64 bit unsigned limit\n");
             fprintf(stderr, "TLDR -> too fucken many file segments to merge.  Now terminating\n");
+            fclose(mergedFile);
+            free(temp);
+            free(buffer);
             exit(EXIT_FAILURE);
         }
         snprintf(temp, tempSize, "%s.%llu", inputFileName, i);
