@@ -16,29 +16,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "file.h"
 
-int main(int argc, char **argv) {
+void splitFile(char *inputFileName, char *outputFileName){
     unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
-    char inputFileName[100] = "input";
-    char outputFileName[100] = "output";
     unsigned long long fileChunkSize = 1048576;
-    if (argc > 2){
-        strncpy(inputFileName, argv[1], 100);
-        strncpy(outputFileName, argv[2], 100);
-    }
-    if (argc > 3){
-        fileChunkSize = atoll(argv[3]);
-    }
     FILE *inputFile = fopen(inputFileName, "rb");
     if (inputFile == NULL){
         free(buffer);
         return 0;
     }
-    fseeko(inputFile, 0, SEEK_END);
-    unsigned long long fileSize = ftello(inputFile);
-    fseeko(inputFile, 0, SEEK_SET);
-    unsigned long long numberOfChunks = fileSize / fileChunkSize;
-    char temp[200];
+    unsigned long long inputFileSize = fileSize(inputFile);
+    unsigned long long numberOfChunks = inputFileSize / fileChunkSize;
+    char *temp = (char *) malloc(strlen(outputFileName) + numberOfChunks + 2);
     unsigned long long i;
     for (i = 0; i < numberOfChunks; i++){
         fread(buffer, fileChunkSize, 1, inputFile);
@@ -48,10 +38,10 @@ int main(int argc, char **argv) {
         fclose(output);
         printf("%llu\n", i);
     }
-    printf("%llu\n", (fileSize % fileChunkSize));
+    printf("%llu\n", (inputFileSize % fileChunkSize));
     printf("%llu\n", (fileSize - (numberOfChunks * fileChunkSize)));
-    if (fileSize % fileChunkSize != 0){
-        unsigned long long remainderChunckSize = fileSize - (numberOfChunks * fileChunkSize);
+    if (inputFileSize % fileChunkSize != 0){
+        unsigned long long remainderChunckSize = inputFileSize % numberOfChunks;
         fread(buffer, remainderChunckSize, 1, inputFile);
         sprintf(temp, "%s.%llu", outputFileName, i);
         FILE *output = fopen(temp, "wb");
@@ -60,5 +50,6 @@ int main(int argc, char **argv) {
     }
     fclose(inputFile);
     free(buffer);
+    free(temp);
     return 0;
 }
