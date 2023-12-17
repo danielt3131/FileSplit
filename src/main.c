@@ -46,9 +46,16 @@ void fileSelection(char *inputFileName, char *outputFileName){
     outputFileName[(strlen(outputFileName) - 1)] = '\0';
 }
 
+void chunkSelection(unsigned long long *chunkSize){
+    printf("Enter in the size you want each file slice to be\n");
+    scanf("%llu", chunkSize);
+}
+
+// CLI arguments -> InputFile, OutputFile, mode selector, FileChunkSize
 int main (int argc, char **argv){
     char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
+    unsigned long long fileChunkSize = 0;
     if (argc > 4){
         inputFileName = (char *) malloc(strlen(argv[1]) + 1);
         if (inputFileName == NULL){
@@ -63,9 +70,10 @@ int main (int argc, char **argv){
         }
         strcpy(inputFileName, argv[1]);
         strcpy(outputFileName, argv[2]);
-        if (atoi(argv[3]) == 1){
+        fileChunkSize = atoll(argv[4]);
+        if (atoi(argv[3]) == 1 && fileChunkSize != 0){
             splitFile(inputFileName, outputFileName);
-        } else if (atoi(argv[3]) == 2){
+        } else if (atoi(argv[3]) == 2 && fileChunkSize != 0){
             mergeFile(inputFileName, outputFileName);
         } else{
             fprintf(stderr, "Wrong command line arguments\n");
@@ -81,7 +89,8 @@ int main (int argc, char **argv){
         char selector = getc(stdin);
         if(selector == '1'){
             fileSelection(inputFileName, outputFileName);
-            if(splitFile(inputFileName, outputFileName) == 1){
+            chunkSelection(&fileChunkSize);
+            if(splitFile(inputFileName, outputFileName, fileChunkSize) == 1){
                 fprintf(stderr, "There was an error in splitFile\n");
             }
             free(inputFileName);
