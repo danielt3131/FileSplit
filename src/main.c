@@ -23,8 +23,13 @@ int main (int argc, char **argv){
     char *outputFileName = NULL;
     if (argc > 3){
         inputFileName = (char *) malloc(strlen(argv[1]) + 1);
+        if (inputFileName == NULL){
+            fprintf(stderr, "Unable to allocate memory. Now terminating\n");
+            return (EXIT_FAILURE);
+        }
         outputFileName = (char *) malloc(strlen(argv[2]) + 1);
-        if (inputFileName == NULL || outputFileName == NULL){
+        if (outputFileName == NULL){
+            free(inputFileName);
             fprintf(stderr, "Unable to allocate memory. Now terminating\n");
             return (EXIT_FAILURE);
         }
