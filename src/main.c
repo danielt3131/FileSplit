@@ -72,10 +72,8 @@ int main (int argc, char **argv){
         printf("Welcome to file splitter\n");
         printf("Press 1 to split a file\n");
         printf("Press 2 to merge a file\n");
-        printf("Press anyother key to quit\n");
-        char selector;
-        scanf("%c\n", &selector);
-        putc(selector, stdout);
+        printf("Press any other key to quit\n");
+        char selector = getc(stdin);
         if(selector == '1'){
             fileSelection(inputFileName, outputFileName);
             mergeFile(inputFileName, outputFileName);
