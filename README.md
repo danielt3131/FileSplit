@@ -16,4 +16,5 @@ To build:
         - If make is install then run make
             - May need to rename the executable to add .exe
         - Else you must run the following command inside of the src folder
-            - gcc -o fsm.exe main.c fileSize.c mergefile.c splitfile.c
+            - gcc -I(location of ncurses) -o fsm.exe main.c fileSize.c mergefile.c splitfile.c message.c selection.c -lncurses
+            - Typically C:\msys64\ucrt64\include\ncurses
