@@ -34,7 +34,7 @@ void mergeFile(char *inputFileName, char *outputFileName){
     unsigned long long numberOfSplitFiles = 0;
     if (dir == NULL){
         fprintf(stderr, "Unable to open the working directory\n");
-        return(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     } else{
         while(dirEntry = readdir(dir) != NULL){
             for(unsigned long long i = 0; i <= strlen(dirEntry->d_name); i++){
@@ -65,5 +65,4 @@ void mergeFile(char *inputFileName, char *outputFileName){
     free(buffer);
     free(temp);
     fclose(mergedFile);
-    return 0;
 }

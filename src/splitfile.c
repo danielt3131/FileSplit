@@ -24,7 +24,7 @@ void splitFile(char *inputFileName, char *outputFileName){
     FILE *inputFile = fopen(inputFileName, "rb");
     if (inputFile == NULL){
         free(buffer);
-        return 0;
+        exit(EXIT_FAILURE);
     }
     unsigned long long inputFileSize = fileSize(inputFile);
     unsigned long long numberOfChunks = inputFileSize / fileChunkSize;
@@ -51,5 +51,4 @@ void splitFile(char *inputFileName, char *outputFileName){
     fclose(inputFile);
     free(buffer);
     free(temp);
-    return 0;
 }
