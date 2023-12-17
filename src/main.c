@@ -49,7 +49,7 @@ void fileSelection(char *inputFileName, char *outputFileName){
 int main (int argc, char **argv){
     char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
-    if (argc > 3){
+    if (argc > 4){
         inputFileName = (char *) malloc(strlen(argv[1]) + 1);
         if (inputFileName == NULL){
             fprintf(stderr, "Unable to allocate memory. Now terminating\n");
@@ -63,9 +63,9 @@ int main (int argc, char **argv){
         }
         strcpy(inputFileName, argv[1]);
         strcpy(outputFileName, argv[2]);
-        if (atoi(argv[3]) == 0){
+        if (atoi(argv[3]) == 1){
             splitFile(inputFileName, outputFileName);
-        } else if(atoi(argv[3]) == 1){
+        } else if (atoi(argv[3]) == 2){
             mergeFile(inputFileName, outputFileName);
         } else{
             fprintf(stderr, "Wrong command line arguments\n");
