@@ -18,7 +18,7 @@
 #include <string.h>
 #include "file.h"
 #define MAX_FILENAME_LENGTH 100
-
+#define DEFAULT_CHUNK_SIZE 1048576
 void fileSelection(char *inputFileName, char *outputFileName){
     
     // Allocating inputFileName from the heap
@@ -55,8 +55,8 @@ void chunkSelection(unsigned long long *chunkSize){
 int main (int argc, char **argv){
     char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
-    unsigned long long fileChunkSize = 0;
-    if (argc > 4){
+    unsigned long long fileChunkSize = DEFAULT_CHUNK_SIZE;
+    if (argc > 3){
         inputFileName = (char *) malloc(strlen(argv[1]) + 1);
         if (inputFileName == NULL){
             fprintf(stderr, "Unable to allocate memory. Now terminating\n");
@@ -70,10 +70,12 @@ int main (int argc, char **argv){
         }
         strcpy(inputFileName, argv[1]);
         strcpy(outputFileName, argv[2]);
-        fileChunkSize = atoll(argv[4]);
-        if (atoi(argv[3]) == 1 && fileChunkSize != 0){
+        if (argv > 4){
+            fileChunkSize = atoll(argv[4]);
+        }
+        if (atoi(argv[3]) == 1){
             splitFile(inputFileName, outputFileName, fileChunkSize);
-        } else if (atoi(argv[3]) == 2 && fileChunkSize != 0){
+        } else if (atoi(argv[3]) == 2){
             mergeFile(inputFileName, outputFileName);
         } else{
             fprintf(stderr, "Wrong command line arguments\n");
