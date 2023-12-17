@@ -34,11 +34,16 @@ void fileSelection(char *inputFileName, char *outputFileName){
         fprintf(stderr, "Unable to allocate memory. Now terminating\n");
         exit(EXIT_FAILURE);
     }
-    fflush(stdin);
+    // Flush stdin
+    fgets(inputFileName, MAX_FILENAME_LENGTH, stdin);
     printf("Please type in the name of the input file\n");
     fgets(inputFileName, MAX_FILENAME_LENGTH, stdin);
+    // Remove LF
+    inputFileName[(strlen(inputFileName) - 1)] = '\0';
     printf("Please type in the name of the output file\n");
     fgets(outputFileName, MAX_FILENAME_LENGTH, stdin);
+    // Remove LF
+    outputFileName[(strlen(outputFileName) - 1)] = '\0';
 }
 
 int main (int argc, char **argv){
