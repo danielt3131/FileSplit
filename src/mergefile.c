@@ -16,37 +16,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include "file.h"
+#include <limits.h>
+#define BUFFER_SIZE 1048576
 
-int main(int argc, char **argv) {
-    unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
-    char mergedFileName[100] = "mergedFile";
-    char splitFileName[100] = "split";
-    if (argc > 2){
-        strncpy(mergedFileName, argv[1], 100);
-        strncpy(splitFileName, argv[2], 100);
+int mergeFile(char *inputFileName, char *outputFileName){
+    unsigned char *buffer = (unsigned char *) malloc((BUFFER_SIZE) * sizeof(unsigned char)); // 1 MiB buffer
+    if(buffer == NULL){
+        return(EXIT_FAILURE);
     }
-    FILE *mergedFile = fopen(mergedFileName, "wb");
-
-    char temp[200];
+    FILE *mergedFile = fopen(outputFileName, "wb");
+    if (mergedFile == NULL){
+        free(buffer);
+        return(EXIT_FAILURE);
+    }
     FILE *splitFileOpen = NULL;
     unsigned long long splitFileSize = 0;
     unsigned long long i = 0;
-    while (1){
-        sprintf(temp, "%s.%llu", splitFileName, i);
+    size_t tempSize = strlen(inputFileName) + 50;
+    char *temp = (char *) malloc(tempSize);
+    if(temp == NULL){
+        free(buffer);
+        return(EXIT_FAILURE);
+    }
+    while(1){
+        if (i == ULLONG_MAX){
+            fprintf(stderr, "The number of file segments to merge have exceeded the 64 bit unsigned limit\n");
+            fprintf(stderr, "TLDR -> too fucken many file segments to merge.  Now terminating\n");
+            fclose(mergedFile);
+            free(temp);
+            free(buffer);
+            return(EXIT_FAILURE);
+        }
+        snprintf(temp, tempSize, "%s.%llu", inputFileName, i);
         splitFileOpen = fopen(temp, "rb");
         if(splitFileOpen == NULL){
             break;
         }
-        fseeko(splitFileOpen, 0, SEEK_END);
-        splitFileSize = ftello(splitFileOpen);
+        splitFileSize = fileSize(splitFileOpen);
         printf("%llu\n", splitFileSize);
-        fseeko(splitFileOpen, 0, SEEK_SET);
         fread(buffer, splitFileSize, 1, splitFileOpen);
         fwrite(buffer, splitFileSize, 1, mergedFile);
         fclose(splitFileOpen);
         i++;
     }
     free(buffer);
+    free(temp);
     fclose(mergedFile);
-    return 0;
+    return(EXIT_SUCCESS);
 }
