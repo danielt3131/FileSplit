@@ -19,8 +19,8 @@
 #include "file.h"
 
 void splitFile(char *inputFileName, char *outputFileName){
-    unsigned char *buffer = (unsigned char *) malloc((1024 * 1024) * sizeof(unsigned char)); // 1 MiB buffer
     unsigned long long fileChunkSize = 1048576;
+    unsigned char *buffer = (unsigned char *) malloc((fileChunkSize) * sizeof(unsigned char)); // 1 MiB buffer
     FILE *inputFile = fopen(inputFileName, "rb");
     if (inputFile == NULL){
         free(buffer);
