@@ -22,6 +22,8 @@
 #define MAX_FILENAME_LENGTH 100
 #define DEFAULT_CHUNK_SIZE 1048576
 #define ERROR_OUTPUT 1
+#define SPLIT_FILE 1
+#define MERGE_FILE 2
 void fileSelection(char *inputFileName, char *outputFileName){
     
     // Allocating inputFileName from the heap
@@ -81,7 +83,7 @@ void completedSplitMsg(char *inputFileName, char *outputFileName){
 
 void errorMsg(short type, char *inputFileName, char *outputFileName){
     switch (type){
-    case 1:
+    case SPLIT_FILE:
         attron(COLOR_PAIR(ERROR_OUTPUT));
         printw("There was an error in splitFile\n");
         refresh();
@@ -90,7 +92,7 @@ void errorMsg(short type, char *inputFileName, char *outputFileName){
         free(outputFileName);
         endwin();
         break;
-    case 2:
+    case MERGE_FILE:
         attron(COLOR_PAIR(ERROR_OUTPUT));
         printw("There was an error in mergeFile\n");
         refresh();
@@ -126,9 +128,9 @@ int main (int argc, char **argv){
         if (argc > 4){
             fileChunkSize = atoll(argv[4]);
         }
-        if (atoi(argv[3]) == 1){
+        if (atoi(argv[3]) == SPLIT_FILE){
             splitFile(inputFileName, outputFileName, fileChunkSize);
-        } else if (atoi(argv[3]) == 2){
+        } else if (atoi(argv[3]) == MERGE_FILE){
             mergeFile(inputFileName, outputFileName);
         } else{
             fprintf(stderr, "Wrong command line arguments\n");
