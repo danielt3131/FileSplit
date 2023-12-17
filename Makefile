@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 TARGET = program
-OBJS = main.o splitfile.o mergefile.o
+OBJS = main.o splitfile.o mergefile.o fileSize.o
 all: $(TARGET)
 
 $(TARGET) : $(OBJS)
