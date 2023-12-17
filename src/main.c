@@ -39,14 +39,10 @@ void fileSelection(char *inputFileName, char *outputFileName){
     printw("Please type in the name of the input file\n");
     refresh();
     getnstr(inputFileName, MAX_FILENAME_LENGTH);
-    // Remove LF
-    inputFileName[(strlen(inputFileName) - 1)] = '\0';
     clear();
     printw("Please type in the name of the output file\n");
     refresh();
     getnstr(outputFileName, MAX_FILENAME_LENGTH);
-    // Remove LF
-    outputFileName[(strlen(outputFileName) - 1)] = '\0';
     clear();
 }
 
