@@ -47,7 +47,7 @@ void fileSelection(char *inputFileName, char *outputFileName){
 }
 
 void chunkSelection(unsigned long long *chunkSize){
-    printf("Do you want to set the size for each file slice the default value is %d\n", MAX_FILENAME_LENGTH);
+    printf("Do you want to set the size for each file slice the default value is %d\n", DEFAULT_CHUNK_SIZE);
     printf("If so then press 1 otherwise press any other key\n");
     char selector = getc(stdin);
     if (selector == '1'){
