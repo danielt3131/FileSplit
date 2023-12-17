@@ -4,6 +4,9 @@ A program that can either split a file into n slices or merge the n slices back 
 
 Licensed under the GPLv3
 
+Required dependencies: 
+- ncurses
+
 To build: 
 - On unix based systems (GNU/Linux, macOS, BSD) 
     - run make in a terminal window
