@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
+#include <unistd.h>
 #include <ncurses.h>
 #include "file.h"
 #define MAX_FILENAME_LENGTH 100
@@ -55,6 +56,26 @@ void chunkSelection(unsigned long long *chunkSize){
         scanw("%llu", chunkSize);
     }
     clear();
+}
+
+void completedMergeMsg(char *inputFileName, char *outputFileName){
+    clear();
+    printw("The file(s) of %s have been merged into %s\n", inputFileName, outputFileName);
+    refresh();
+    free(inputFileName);
+    free(outputFileName);
+    sleep(5);
+    endwin();
+}
+
+void completedSplitMsg(char *inputFileName, char *outputFileName){
+    clear();
+    printw("The file of %s have been splited into %s\n", inputFileName, outputFileName);
+    refresh();
+    free(inputFileName);
+    free(outputFileName);
+    sleep(5);
+    endwin();
 }
 
 // CLI arguments -> InputFile, OutputFile, mode selector, FileChunkSize
@@ -101,20 +122,24 @@ int main (int argc, char **argv){
         if(selector == '1'){
             fileSelection(inputFileName, outputFileName);
             chunkSelection(&fileChunkSize);
-            endwin();
             if(splitFile(inputFileName, outputFileName, fileChunkSize) == 1){
                 fprintf(stderr, "There was an error in splitFile\n");
+                free(inputFileName);
+                free(outputFileName);
+                endwin();
+            } else {
+                completedSplitMsg(inputFileName, outputFileName);
             }
-            free(inputFileName);
-            free(outputFileName);
         } else if(selector == '2'){
             fileSelection(inputFileName, outputFileName);
-            endwin();
             if(mergeFile(inputFileName, outputFileName) == 1){
                 fprintf(stderr, "There was an error in mergeFile\n");
+                free(inputFileName);
+                free(outputFileName);
+                endwin();
+            } else {
+                completedMergeMsg(inputFileName, outputFileName);
             }
-            free(inputFileName);
-            free(outputFileName);
         } else{
             printw("Try again\n");
             refresh();
