@@ -72,7 +72,7 @@ int main (int argc, char **argv){
         strcpy(outputFileName, argv[2]);
         fileChunkSize = atoll(argv[4]);
         if (atoi(argv[3]) == 1 && fileChunkSize != 0){
-            splitFile(inputFileName, outputFileName);
+            splitFile(inputFileName, outputFileName, fileChunkSize);
         } else if (atoi(argv[3]) == 2 && fileChunkSize != 0){
             mergeFile(inputFileName, outputFileName);
         } else{
