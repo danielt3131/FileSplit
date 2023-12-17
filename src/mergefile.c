@@ -18,6 +18,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "file.h"
+#include <limits.h>
 
 void mergeFile(char *inputFileName, char *outputFileName){
     unsigned char *buffer = (unsigned char *) malloc((1048576) * sizeof(unsigned char)); // 1 MiB buffer
@@ -28,6 +29,11 @@ void mergeFile(char *inputFileName, char *outputFileName){
     size_t tempSize = strlen(inputFileName) + 50;
     char *temp = (char *) malloc(tempSize);
     while(1){
+        if (i == ULLONG_MAX){
+            fprintf(stderr, "The number of file segments to merge have exceeded the 64 bit unsigned limit\n");
+            fprintf(stderr, "TLDR -> too fucken many file segments to merge.  Now terminating\n");
+            exit(EXIT_FAILURE);
+        }
         snprintf(temp, tempSize, "%s.%llu", inputFileName, i);
         splitFileOpen = fopen(temp, "rb");
         if(splitFileOpen == NULL){
