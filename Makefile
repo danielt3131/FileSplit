@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -g
 TARGET = fsm
 LDFLAGS = -lncurses
 OBJS = main.o splitfile.o mergefile.o fileSize.o selection.o message.o
