@@ -21,7 +21,7 @@
 #include "file.h"
 #include "message.h"
 #include "selection.h"
-#define MAX_FILENAME_LENGTH 100
+#define MAX_FILENAME_LENGTH 512
 #define DEFAULT_CHUNK_SIZE 1048576
 #define ERROR_OUTPUT 1
 #define SPLIT_FILE 1
