@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -g -O2
 TARGET = fsm
 LDFLAGS = -lncurses
-OBJS = main.o splitfile.o mergefile.o fileSize.o selection.o message.o
+OBJS = main.o splitfile.o mergefile.o fileSize.o selection.o message.o selectionCLI.o
 all: $(TARGET)
 
 $(TARGET) : $(OBJS)
