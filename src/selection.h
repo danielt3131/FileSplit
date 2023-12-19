@@ -32,4 +32,6 @@ void fileSelection(char *inputFileName, char *outputFileName);
  */
 void chunkSelection(unsigned long long *chunkSize);
 
+int selectionCLI(int argc, char **argv, char *inputFileName, char *outputFileName, int *fileChunkSize);
+
 #endif //SELECTION_H
