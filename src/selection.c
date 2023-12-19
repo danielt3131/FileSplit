@@ -55,14 +55,14 @@ void chunkSelection(unsigned long long *chunkSize){
     }
     clear();
 }
-void modeSelection(){
+int modeSelection(){
     // Init ncurses
     initscr();
     start_color();
     if(has_colors() == false){
         endwin();
-        printf("Terminal doesn't support colors\n");
-        exit(EXIT_FAILURE);
+        fprintf(stderr, "Terminal doesn't support colors\n");
+        return(EXIT_FAILURE);
     }
     char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
@@ -95,5 +95,7 @@ void modeSelection(){
         refresh();
         free(inputFileName);
         free(outputFileName);
+        return(EXIT_FAILURE);
     }
+    return(EXIT_SUCCESS);
 }

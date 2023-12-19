@@ -43,7 +43,7 @@ int selectionCLI(int argc, char **argv);
 /*
  * Handles the mode selection
  * @param none
- * @return The exit status
+ * @return The return status
  */
 int modeSelection();
 
