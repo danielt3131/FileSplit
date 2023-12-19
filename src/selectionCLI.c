@@ -38,11 +38,18 @@ int selectionCLI(int argc, char **argv){
             fileChunkSize = atoll(argv[4]);
         }
         if (atoi(argv[3]) == SPLIT_FILE){
-            splitFile(inputFileName, outputFileName, fileChunkSize);
-            return (EXIT_SUCCESS);
+            if (splitFile(inputFileName, outputFileName, fileChunkSize) == EXIT_SUCCESS){
+                return (EXIT_SUCCESS);
+            } else {
+                return (EXIT_FAILURE);
+            }
+            
         } else if (atoi(argv[3]) == MERGE_FILE){
-            mergeFile(inputFileName, outputFileName);
-            return (EXIT_SUCCESS);
+            if(mergeFile(inputFileName, outputFileName) == 0){
+                return (EXIT_SUCCESS);
+            } else {
+                return (EXIT_FAILURE);
+            }
         } else{
             fprintf(stderr, "Wrong command line arguments\n");
             return (EXIT_FAILURE);
