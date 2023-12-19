@@ -31,6 +31,7 @@ int mergeFile(char *inputFileName, char *outputFileName){
     // Calculate the size of the needed buffer by opening the first file slice, then closing the file slice
     FILE *splitFileOpen = fopen(temp, "rb");
     if (splitFileOpen == NULL){
+        fprintf(stderr, "Unable to find the files to merge\n");
         free(temp);
         return(EXIT_FAILURE);
     }

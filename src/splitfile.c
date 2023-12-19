@@ -22,10 +22,12 @@
 int splitFile(char *inputFileName, char *outputFileName, unsigned long long fileChunkSize){
     unsigned char *buffer = (unsigned char *) malloc((fileChunkSize) * sizeof(unsigned char));
     if(buffer == NULL){
+        fprintf(stderr, "Unable to allocate memory\n");
         return(EXIT_FAILURE);
     }
     FILE *inputFile = fopen(inputFileName, "rb");
     if (inputFile == NULL){
+        fprintf(stderr, "Unable to locate the file to split\n");
         free(buffer);
         return(EXIT_FAILURE);
     }
@@ -34,6 +36,7 @@ int splitFile(char *inputFileName, char *outputFileName, unsigned long long file
     size_t tempSize = strlen(outputFileName) + numberOfChunks + 2;
     char *temp = (char *) malloc(tempSize);
     if(temp == NULL){
+        fprintf(stderr, "Unable to allocate memory\n");
         free(buffer);
         return(EXIT_FAILURE);
     }
