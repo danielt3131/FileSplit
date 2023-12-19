@@ -39,18 +39,12 @@ int selectionCLI(int argc, char **argv){
         }
         if (atoi(argv[3]) == SPLIT_FILE){
             splitFile(inputFileName, outputFileName, fileChunkSize);
-            free(inputFileName);
-            free(outputFileName);
             return (EXIT_SUCCESS);
         } else if (atoi(argv[3]) == MERGE_FILE){
             mergeFile(inputFileName, outputFileName);
-            free(inputFileName);
-            free(outputFileName);
             return (EXIT_SUCCESS);
         } else{
             fprintf(stderr, "Wrong command line arguments\n");
-            free(inputFileName);
-            free(outputFileName);
             return (EXIT_FAILURE);
         }
     }
