@@ -36,11 +36,15 @@ void chunkSelection(unsigned long long *chunkSize);
  * Handles the cli arguments
  * @param argc The number of cli arguments
  * @param **argv The array of cli argument strings
- * @param *inputFileName The filepath of the input file
- * @param *outputFileName The filepath of the output file
- * @param *fileChunkSize The pointer to the fileChunkSize
- * @return the exit status 
+ * @return the return status 
  */
-int selectionCLI(int argc, char **argv, char *inputFileName, char *outputFileName, int *fileChunkSize);
+int selectionCLI(int argc, char **argv);
+
+/*
+ * Handles the mode selection
+ * @param none
+ * @return The exit status
+ */
+int modeSelection();
 
 #endif //SELECTION_H

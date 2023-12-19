@@ -18,8 +18,9 @@
 #include <stdlib.h>
 #define SPLIT_FILE 1
 #define MERGE_FILE 2
+#define DEFAULT_CHUNK_SIZE 1048576
 
-int selectionCLI(int argc, char **argv, char *inputFileName, char *outputFileName, int *fileChunkSize){
+int selectionCLI(int argc, char **argv){
     // Help menu
     if (argc == 2 && (strcmp(argv[1], "-h") == 0 || (strcmp(argv[1], "help") == 0))){
         printf("The cli arguments are input file path, output file path, mode selector, and segment size\n");
@@ -30,13 +31,14 @@ int selectionCLI(int argc, char **argv, char *inputFileName, char *outputFileNam
         return (EXIT_SUCCESS);
     }
     if (argc > 3){
-    inputFileName = argv[1];
-    outputFileName = argv[2];
+    char *inputFileName = argv[1];
+    char *outputFileName = argv[2]; 
+    unsigned long long fileChunkSize = DEFAULT_CHUNK_SIZE; 
         if (argc > 4){
-            *fileChunkSize = atoll(argv[4]);
+            fileChunkSize = atoll(argv[4]);
         }
         if (atoi(argv[3]) == SPLIT_FILE){
-            splitFile(inputFileName, outputFileName, (*fileChunkSize));
+            splitFile(inputFileName, outputFileName, fileChunkSize);
             free(inputFileName);
             free(outputFileName);
             return (EXIT_SUCCESS);
