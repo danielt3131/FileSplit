@@ -29,41 +29,14 @@
 
 // CLI arguments -> InputFile, OutputFile, mode selector, FileChunkSize
 int main (int argc, char **argv){
-    char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
-    char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
+    char *inputFileName = NULL;
+    char *outputFileName = NULL;
     unsigned long long fileChunkSize = DEFAULT_CHUNK_SIZE;
-    if (argc > 3){
-        if (inputFileName == NULL){
-            fprintf(stderr, "Unable to allocate memory. Now terminating\n");
-            return (EXIT_FAILURE);
-        }
-        if (outputFileName == NULL){
-            free(inputFileName);
-            fprintf(stderr, "Unable to allocate memory. Now terminating\n");
-            return (EXIT_FAILURE);
-        }
-        strncpy(inputFileName, argv[1], MAX_FILENAME_LENGTH);
-        strncpy(outputFileName, argv[2], MAX_FILENAME_LENGTH);
-        if (argc > 4){
-            fileChunkSize = atoll(argv[4]);
-        }
-        if (atoi(argv[3]) == SPLIT_FILE){
-            splitFile(inputFileName, outputFileName, fileChunkSize);
-            free(inputFileName);
-            free(outputFileName);
-            return (EXIT_SUCCESS);
-        } else if (atoi(argv[3]) == MERGE_FILE){
-            mergeFile(inputFileName, outputFileName);
-            free(inputFileName);
-            free(outputFileName);
-            return (EXIT_SUCCESS);
-        } else{
-            fprintf(stderr, "Wrong command line arguments\n");
-            free(inputFileName);
-            free(outputFileName);
-            return (EXIT_FAILURE);
-        }
+    if (argc > 1){
+        selectionCLI(argc, argv, inputFileName, outputFileName, &fileChunkSize);
     } else {
+        inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
+        outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
         // Init ncurses
         initscr();
         start_color();
