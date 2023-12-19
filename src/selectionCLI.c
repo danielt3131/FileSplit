@@ -21,7 +21,7 @@
 
 int selectionCLI(int argc, char **argv, char *inputFileName, char *outputFileName, int *fileChunkSize){
     // Help menu
-    if (argc == 2 && (strcmp(argv[1], "-h") == 0 || (strcmp(argv[1], "help") == 0)) {
+    if (argc == 2 && (strcmp(argv[1], "-h") == 0 || (strcmp(argv[1], "help") == 0))){
         printf("The cli arguments are input file path, output file path, mode selector, and segment size\n");
         printf("The mode selector:\n");
         printf("1 to split a file\n");
@@ -32,23 +32,24 @@ int selectionCLI(int argc, char **argv, char *inputFileName, char *outputFileNam
     if (argc > 3){
     inputFileName = argv[1];
     outputFileName = argv[2];
-    if (argc > 4){
-        *fileChunkSize = atoll(argv[4]);
-    }
-    if (atoi(argv[3]) == SPLIT_FILE){
-        splitFile(inputFileName, outputFileName, (*fileChunkSize));
-        free(inputFileName);
-        free(outputFileName);
-        return (EXIT_SUCCESS);
-    } else if (atoi(argv[3]) == MERGE_FILE){
-        mergeFile(inputFileName, outputFileName);
-        free(inputFileName);
-        free(outputFileName);
-        return (EXIT_SUCCESS);
-    } else{
-        fprintf(stderr, "Wrong command line arguments\n");
-        free(inputFileName);
-        free(outputFileName);
-        return (EXIT_FAILURE);
+        if (argc > 4){
+            *fileChunkSize = atoll(argv[4]);
+        }
+        if (atoi(argv[3]) == SPLIT_FILE){
+            splitFile(inputFileName, outputFileName, (*fileChunkSize));
+            free(inputFileName);
+            free(outputFileName);
+            return (EXIT_SUCCESS);
+        } else if (atoi(argv[3]) == MERGE_FILE){
+            mergeFile(inputFileName, outputFileName);
+            free(inputFileName);
+            free(outputFileName);
+            return (EXIT_SUCCESS);
+        } else{
+            fprintf(stderr, "Wrong command line arguments\n");
+            free(inputFileName);
+            free(outputFileName);
+            return (EXIT_FAILURE);
+        }
     }
 }
