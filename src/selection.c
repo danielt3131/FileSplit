@@ -82,6 +82,7 @@ int modeSelection(){
         chunkSelection(&fileChunkSize);
         if(splitFile(inputFileName, outputFileName, fileChunkSize) == 1){
             errorMsg(1, inputFileName, outputFileName);
+            return (EXIT_FAILURE);
         } else {
             completedSplitMsg(inputFileName, outputFileName);
         }
@@ -89,6 +90,7 @@ int modeSelection(){
         fileSelection(inputFileName, outputFileName);
         if(mergeFile(inputFileName, outputFileName) == 1){
             errorMsg(2, inputFileName, outputFileName);
+            return (EXIT_FAILURE);
         } else {
             completedMergeMsg(inputFileName, outputFileName);
         }
