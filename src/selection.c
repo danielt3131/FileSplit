@@ -17,6 +17,8 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include "selection.h"
+#include "file.h"
+#include "message.h"
 #define MAX_FILENAME_LENGTH 512
 #define DEFAULT_CHUNK_SIZE 1048576
 #define ERROR_OUTPUT 1
