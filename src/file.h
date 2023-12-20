@@ -19,17 +19,17 @@
 
 /*
  * Merges back n slices back into the original file
- * @param *inputFileName The name of the splitted file
- * @param *outputFileName The name of the merged file
+ * @param *inputFileName The filepath of the files to merge
+ * @param *outputFileName The filepath of the merged file
  * @return Nothing
  */
 int mergeFile(char *inputFileName, char *outputFileName);
 
 /*
  * Splits a file into n slices
- * @param *inputFileName The name of the file to split
- * @param *outputFileName The name.* of splitted files where * is the integer extension
- */
+ * @param *inputFileName The filepath of the file to split
+ * @param *outputFileName The filepath .* of the splitted file where * is the integer extension
+*/
 
 int splitFile(char *inputFileName, char *outputFileName, unsigned long long fileChunkSize);
 

@@ -17,9 +17,14 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include "selection.h"
-#define MAX_FILENAME_LENGTH 100
+#include "file.h"
+#include "message.h"
+#define MAX_FILENAME_LENGTH 512
 #define DEFAULT_CHUNK_SIZE 1048576
 #define ERROR_OUTPUT 1
+#define SPLIT_FILE 1
+#define MERGE_FILE 2
+
 
 void fileSelection(char *inputFileName, char *outputFileName){
     if (inputFileName == NULL){
@@ -51,4 +56,50 @@ void chunkSelection(unsigned long long *chunkSize){
         scanw("%llu", chunkSize);
     }
     clear();
+}
+int modeSelection(){
+    // Init ncurses
+    initscr();
+    start_color();
+    if(has_colors() == false){
+        endwin();
+        fprintf(stderr, "Terminal doesn't support colors\n");
+        return(EXIT_FAILURE);
+    }
+    char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
+    char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
+    unsigned long long fileChunkSize = DEFAULT_CHUNK_SIZE;
+    init_pair(ERROR_OUTPUT, COLOR_RED, COLOR_BLACK);
+    printw("Welcome to file splitter\n");
+    printw("Press 1 to split a file\n");
+    printw("Press 2 to merge a file\n");
+    printw("Press any other key to quit\n");
+    refresh();
+    char selector = getch();
+    clear();
+    if(selector == '1'){
+        fileSelection(inputFileName, outputFileName);
+        chunkSelection(&fileChunkSize);
+        if(splitFile(inputFileName, outputFileName, fileChunkSize) == 1){
+            errorMsg(1, inputFileName, outputFileName);
+            return (EXIT_FAILURE);
+        } else {
+            completedSplitMsg(inputFileName, outputFileName);
+        }
+    } else if(selector == '2'){
+        fileSelection(inputFileName, outputFileName);
+        if(mergeFile(inputFileName, outputFileName) == 1){
+            errorMsg(2, inputFileName, outputFileName);
+            return (EXIT_FAILURE);
+        } else {
+            completedMergeMsg(inputFileName, outputFileName);
+        }
+    } else{
+        endwin();
+        printf("Try again\n");
+        free(inputFileName);
+        free(outputFileName);
+        return(EXIT_FAILURE);
+    }
+    return(EXIT_SUCCESS);
 }

@@ -19,8 +19,8 @@
 
 /*
  * File selection
- * @param *inputFileName The name of the input file
- * @param *outputFileName The name of the output file
+ * @param *inputFileName The filepath of the input file
+ * @param *outputFileName The filepath of the output file
  * @return Nothing
  */
 void fileSelection(char *inputFileName, char *outputFileName);
@@ -31,5 +31,20 @@ void fileSelection(char *inputFileName, char *outputFileName);
  * @return Nothing
  */
 void chunkSelection(unsigned long long *chunkSize);
+
+/*
+ * Handles the cli arguments
+ * @param argc The number of cli arguments
+ * @param **argv The array of cli argument strings
+ * @return the return status 
+ */
+int selectionCLI(int argc, char **argv);
+
+/*
+ * Handles the mode selection
+ * @param none
+ * @return The return status
+ */
+int modeSelection();
 
 #endif //SELECTION_H
