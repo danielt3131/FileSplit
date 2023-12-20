@@ -55,5 +55,7 @@ int selectionCLI(int argc, char **argv){
             fprintf(stderr, "Wrong command line arguments\n");
             return (EXIT_FAILURE);
         }
+    } else {
+        return (EXIT_FAILURE);
     }
 }
