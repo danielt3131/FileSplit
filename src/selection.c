@@ -95,8 +95,8 @@ int modeSelection(){
             completedMergeMsg(inputFileName, outputFileName);
         }
     } else{
-        printw("Try again\n");
-        refresh();
+        endwin();
+        printf("Try again\n");
         free(inputFileName);
         free(outputFileName);
         return(EXIT_FAILURE);
