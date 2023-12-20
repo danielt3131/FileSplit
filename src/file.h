@@ -29,6 +29,7 @@ int mergeFile(char *inputFileName, char *outputFileName);
  * Splits a file into n slices
  * @param *inputFileName The filepath of the file to split
  * @param *outputFileName The filepath .* of the splitted file where * is the integer extension
+*/
 
 int splitFile(char *inputFileName, char *outputFileName, unsigned long long fileChunkSize);
 
