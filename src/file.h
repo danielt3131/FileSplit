@@ -14,6 +14,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include <stdio.h>
+#include "error.h"
 #ifndef FILE_H
 #define FILE_H
 

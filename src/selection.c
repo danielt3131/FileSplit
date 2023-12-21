@@ -64,7 +64,7 @@ int modeSelection(){
     if(has_colors() == false){
         endwin();
         fprintf(stderr, "Terminal doesn't support colors\n");
-        return(EXIT_FAILURE);
+        return(COLOR_SUPPORT_ERROR);
     }
     char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
@@ -76,23 +76,28 @@ int modeSelection(){
     printw("Press any other key to quit\n");
     refresh();
     char selector = getch();
+    int returnValue;
     clear();
     if(selector == '1'){
         fileSelection(inputFileName, outputFileName);
         chunkSelection(&fileChunkSize);
-        if(splitFile(inputFileName, outputFileName, fileChunkSize) == 1){
+        returnValue = splitFile(inputFileName, outputFileName, fileChunkSize);
+        if(returnValue != 0){
             errorMsg(1, inputFileName, outputFileName);
-            return (EXIT_FAILURE);
+            return(returnValue);
         } else {
             completedSplitMsg(inputFileName, outputFileName);
+            return(returnValue);
         }
     } else if(selector == '2'){
         fileSelection(inputFileName, outputFileName);
-        if(mergeFile(inputFileName, outputFileName) == 1){
+        returnValue = mergeFile(inputFileName, outputFileName);
+        if(returnValue != 0){
             errorMsg(2, inputFileName, outputFileName);
-            return (EXIT_FAILURE);
+            return(returnValue);
         } else {
             completedMergeMsg(inputFileName, outputFileName);
+            return(returnValue);
         }
     } else{
         endwin();
@@ -101,5 +106,4 @@ int modeSelection(){
         free(outputFileName);
         return(EXIT_FAILURE);
     }
-    return(EXIT_SUCCESS);
 }
