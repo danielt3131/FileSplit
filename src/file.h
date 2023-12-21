@@ -17,7 +17,7 @@
 #ifndef FILE_H
 #define FILE_H
 
-/*
+/**
  * Merges back n slices back into the original file
  * @param *inputFileName The filepath of the files to merge
  * @param *outputFileName The filepath of the merged file
@@ -25,15 +25,14 @@
  */
 int mergeFile(char *inputFileName, char *outputFileName);
 
-/*
+/**
  * Splits a file into n slices
  * @param *inputFileName The filepath of the file to split
  * @param *outputFileName The filepath .* of the splitted file where * is the integer extension
-*/
-
+ */
 int splitFile(char *inputFileName, char *outputFileName, unsigned long long fileChunkSize);
 
-/*
+/**
  * Computes the size of a file
  * @param *file The file pointer 
  * @return The size of the file

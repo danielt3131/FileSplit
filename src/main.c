@@ -20,7 +20,6 @@
 // CLI arguments -> InputFile, OutputFile, mode selector, FileChunkSize
 int main (int argc, char **argv){
     if (argc > 1){
-
         return (selectionCLI(argc, argv));
     } else {
         return(modeSelection());
