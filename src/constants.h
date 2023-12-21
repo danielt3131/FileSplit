@@ -14,8 +14,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ERROR_H
-#define ERROR_H
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 /**
  * @def Types of errors
  */
@@ -24,4 +24,13 @@
 #define FILE_WRITE_ERROR 4
 #define INTEGER_OVERFLOW_ERROR 5
 #define COLOR_SUPPORT_ERROR 6
-#endif //ERROR_H
+
+/**
+ * @def Constant values
+ */
+#define MAX_FILENAME_LENGTH 512
+#define DEFAULT_CHUNK_SIZE 1048576
+#define ERROR_OUTPUT 1
+#define SPLIT_FILE 1
+#define MERGE_FILE 2
+#endif //CONSTANTS_H

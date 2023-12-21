@@ -13,18 +13,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include <ncurses.h>
 #include <stdlib.h>
 #include "selection.h"
 #include "file.h"
 #include "message.h"
-#define MAX_FILENAME_LENGTH 512
-#define DEFAULT_CHUNK_SIZE 1048576
-#define ERROR_OUTPUT 1
-#define SPLIT_FILE 1
-#define MERGE_FILE 2
-
 
 void fileSelection(char *inputFileName, char *outputFileName){
     if (inputFileName == NULL){
