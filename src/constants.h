@@ -13,13 +13,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "selection.h"
 
-// CLI arguments -> InputFile, OutputFile, mode selector, FileChunkSize
-int main (int argc, char **argv){
-    if (argc > 1){
-        return (selectionCLI(argc, argv));
-    } else {
-        return(modeSelection());
-    }
-}
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+/**
+ * @def Types of errors
+ */
+#define ALLOCATION_ERROR 2
+#define FILE_READ_ERROR 3
+#define FILE_WRITE_ERROR 4
+#define INTEGER_OVERFLOW_ERROR 5
+#define COLOR_SUPPORT_ERROR 6
+
+/**
+ * @def Constant values
+ */
+#define MAX_FILENAME_LENGTH 512
+#define DEFAULT_CHUNK_SIZE 1048576
+#define ERROR_OUTPUT 1
+#define SPLIT_FILE 1
+#define MERGE_FILE 2
+#endif //CONSTANTS_H

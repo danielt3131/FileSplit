@@ -17,7 +17,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include "file.h"
 #include <limits.h>
 
@@ -25,7 +24,7 @@ int mergeFile(char *inputFileName, char *outputFileName){
     size_t tempSize = strlen(inputFileName) + 50;
     char *temp = (char *) malloc(tempSize);
     if(temp == NULL){
-        return(EXIT_FAILURE);
+        return(ALLOCATION_ERROR);
     }
     snprintf(temp, tempSize, "%s.0", inputFileName);
     // Calculate the size of the needed buffer by opening the first file slice, then closing the file slice
@@ -33,20 +32,20 @@ int mergeFile(char *inputFileName, char *outputFileName){
     if (splitFileOpen == NULL){
         fprintf(stderr, "Unable to find the files to merge\n");
         free(temp);
-        return(EXIT_FAILURE);
+        return(FILE_READ_ERROR);
     }
     unsigned long long bufferSize = fileSize(splitFileOpen);
     fclose(splitFileOpen);
     unsigned char *buffer = (unsigned char *) malloc((bufferSize) * sizeof(unsigned char));
     if(buffer == NULL){
         free(temp);
-        return(EXIT_FAILURE);
+        return(ALLOCATION_ERROR);
     }
     FILE *mergedFile = fopen(outputFileName, "wb");
     if (mergedFile == NULL){
         free(temp);
         free(buffer);
-        return(EXIT_FAILURE);
+        return(FILE_WRITE_ERROR);
     }
     unsigned long long splitFileSize = 0;
     unsigned long long i = 0;
@@ -57,7 +56,7 @@ int mergeFile(char *inputFileName, char *outputFileName){
             fclose(mergedFile);
             free(temp);
             free(buffer);
-            return(EXIT_FAILURE);
+            return(INTEGER_OVERFLOW_ERROR);
         }
         snprintf(temp, tempSize, "%s.%llu", inputFileName, i);
         splitFileOpen = fopen(temp, "rb");

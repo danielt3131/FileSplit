@@ -13,18 +13,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdio.h>
 #include <ncurses.h>
 #include <stdlib.h>
 #include "selection.h"
 #include "file.h"
 #include "message.h"
-#define MAX_FILENAME_LENGTH 512
-#define DEFAULT_CHUNK_SIZE 1048576
-#define ERROR_OUTPUT 1
-#define SPLIT_FILE 1
-#define MERGE_FILE 2
-
 
 void fileSelection(char *inputFileName, char *outputFileName){
     if (inputFileName == NULL){
@@ -64,7 +57,7 @@ int modeSelection(){
     if(has_colors() == false){
         endwin();
         fprintf(stderr, "Terminal doesn't support colors\n");
-        return(EXIT_FAILURE);
+        return(COLOR_SUPPORT_ERROR);
     }
     char *inputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
     char *outputFileName = (char *) malloc(MAX_FILENAME_LENGTH);
@@ -76,23 +69,28 @@ int modeSelection(){
     printw("Press any other key to quit\n");
     refresh();
     char selector = getch();
+    int returnValue;
     clear();
     if(selector == '1'){
         fileSelection(inputFileName, outputFileName);
         chunkSelection(&fileChunkSize);
-        if(splitFile(inputFileName, outputFileName, fileChunkSize) == 1){
+        returnValue = splitFile(inputFileName, outputFileName, fileChunkSize);
+        if(returnValue != 0){
             errorMsg(1, inputFileName, outputFileName);
-            return (EXIT_FAILURE);
+            return(returnValue);
         } else {
             completedSplitMsg(inputFileName, outputFileName);
+            return(returnValue);
         }
     } else if(selector == '2'){
         fileSelection(inputFileName, outputFileName);
-        if(mergeFile(inputFileName, outputFileName) == 1){
+        returnValue = mergeFile(inputFileName, outputFileName);
+        if(returnValue != 0){
             errorMsg(2, inputFileName, outputFileName);
-            return (EXIT_FAILURE);
+            return(returnValue);
         } else {
             completedMergeMsg(inputFileName, outputFileName);
+            return(returnValue);
         }
     } else{
         endwin();
@@ -101,5 +99,4 @@ int modeSelection(){
         free(outputFileName);
         return(EXIT_FAILURE);
     }
-    return(EXIT_SUCCESS);
 }

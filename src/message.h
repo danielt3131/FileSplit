@@ -14,23 +14,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include <stdio.h>
+#include "constants.h"
 #ifndef MESSAGE_H
 #define MESSAGE_H
-/*
+/**
  * Prints the summary of what happened
  * @param *inputFileName The name of the input file
  * @param *outputFileName The name of the output file
  * @return Nothing
  */
 void completedMergeMsg(char *inputFileName, char *outputFileName);
-/*
+/**
  * Prints the summary of what happened
  * @param *inputFileName The name of the input file
  * @param *outputFileName The name of the output file
  * @return Nothing
  */
 void completedSplitMsg(char *inputFileName, char *outputFileName);
-/*
+/**
  * Prints error message
  * @param type The error type
  * @param *inputFileName The name of the input file

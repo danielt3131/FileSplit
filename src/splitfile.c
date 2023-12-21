@@ -23,13 +23,13 @@ int splitFile(char *inputFileName, char *outputFileName, unsigned long long file
     unsigned char *buffer = (unsigned char *) malloc((fileChunkSize) * sizeof(unsigned char));
     if(buffer == NULL){
         fprintf(stderr, "Unable to allocate memory\n");
-        return(EXIT_FAILURE);
+        return(ALLOCATION_ERROR);
     }
     FILE *inputFile = fopen(inputFileName, "rb");
     if (inputFile == NULL){
         fprintf(stderr, "Unable to locate the file to split\n");
         free(buffer);
-        return(EXIT_FAILURE);
+        return(FILE_READ_ERROR);
     }
     unsigned long long inputFileSize = fileSize(inputFile);
     unsigned long long numberOfChunks = inputFileSize / fileChunkSize;
@@ -38,7 +38,7 @@ int splitFile(char *inputFileName, char *outputFileName, unsigned long long file
     if(temp == NULL){
         fprintf(stderr, "Unable to allocate memory\n");
         free(buffer);
-        return(EXIT_FAILURE);
+        return(ALLOCATION_ERROR);
     }
     unsigned long long i;
     for (i = 0; i < numberOfChunks; i++){
@@ -52,11 +52,11 @@ int splitFile(char *inputFileName, char *outputFileName, unsigned long long file
     // printf("%llu\n", (inputFileSize % fileChunkSize));
     // printf("%llu\n", (inputFileSize - (numberOfChunks * fileChunkSize)));
     if (inputFileSize % fileChunkSize != 0){
-        unsigned long long remainderChunckSize = inputFileSize % fileChunkSize;
-        fread(buffer, remainderChunckSize, 1, inputFile);
+        unsigned long long remainderChunkSize = inputFileSize % fileChunkSize;
+        fread(buffer, remainderChunkSize, 1, inputFile);
         snprintf(temp, tempSize, "%s.%llu", outputFileName, i);
         FILE *output = fopen(temp, "wb");
-        fwrite(buffer, remainderChunckSize, 1, output);
+        fwrite(buffer, remainderChunkSize, 1, output);
         fclose(output);
     }
     fclose(inputFile);

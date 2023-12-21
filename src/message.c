@@ -17,11 +17,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "message.h"
-#define MAX_FILENAME_LENGTH 100
-#define DEFAULT_CHUNK_SIZE 1048576
-#define ERROR_OUTPUT 1
-#define SPLIT_FILE 1
-#define MERGE_FILE 2
 
 void completedMergeMsg(char *inputFileName, char *outputFileName){
     clear();
