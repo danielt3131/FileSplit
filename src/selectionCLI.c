@@ -17,9 +17,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "file.h"
-#define SPLIT_FILE 1
-#define MERGE_FILE 2
-#define DEFAULT_CHUNK_SIZE 1048576
 
 int selectionCLI(int argc, char **argv){
     // Help menu
