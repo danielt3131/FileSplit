@@ -37,6 +37,10 @@ int selectionCLI(int argc, char **argv){
     unsigned long long fileChunkSize = DEFAULT_CHUNK_SIZE; 
         if (argc > 4){
             fileChunkSize = atoll(argv[4]);
+            // Check if the string is a number
+            if (fileChunkSize == 0){
+                return (EXIT_FAILURE);
+            }   
         }
         if (atoi(argv[3]) == SPLIT_FILE){
             if (splitFile(inputFileName, outputFileName, fileChunkSize) == EXIT_SUCCESS){
